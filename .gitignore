@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+library/include/atmosphere.h.ADMpON
+library/lib/hyperion-library.exp
+*.exp
+library/lib/COPYING
+library/lib/COPYRIGHT
+library/lib/HeliostatField.dat
+*.pdb
+*.dat
+*.json
+*.user
