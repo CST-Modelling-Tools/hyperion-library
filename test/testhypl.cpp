@@ -51,6 +51,7 @@ TEST(AtmosphereTest, MutatorsAndAccessors)
     EXPECT_FLOAT_EQ(atmosphere.beta(), beta);
     EXPECT_EQ(atmosphere.attenuation_model(), attenuation_model);
 }
+// Test comment.
 
 /*
         //Specific public functions
