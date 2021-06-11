@@ -14,6 +14,10 @@ namespace hypl
             m_environment {environment} { }
         double operator()(double solar_time) const;
 
+        //Accessors
+        double declination() const { return m_declination; }
+        const Environment& environment() const { return m_environment; }       
+
     private:
         double m_declination;
         const Environment& m_environment;

@@ -11,8 +11,8 @@ namespace hypl
     {
     public:
 
-        Environment( Location location, Atmosphere atmosphere, int delta_days);
         Environment();
+        Environment( Location location, Atmosphere atmosphere, int delta_days);
 
         //Accessors
         const Location& location() const { return m_location; }

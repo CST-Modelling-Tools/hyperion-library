@@ -7,7 +7,7 @@ hypl::Environment::Environment( Location location, Atmosphere atmosphere, int de
             m_delta_days {delta_days} { m_dni_annual_energy = auxfunction::DniYearlyEnergy( (*this) ); }
 
 hypl::Environment::Environment() :
-            m_delta_days {26}
+            m_delta_days {13}
             { m_dni_annual_energy = auxfunction::DniYearlyEnergy( (*this) ); }
 
 void hypl::Environment::set_location(Location location) 
