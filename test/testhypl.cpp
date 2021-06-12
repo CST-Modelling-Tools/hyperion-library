@@ -302,6 +302,171 @@ TEST(BoundariesTest, MutatorsAndAccessors)
     EXPECT_DOUBLE_EQ(boundaries.ymax(), ymax);
 }
 
+TEST(EnvironmentTest, DefaultConstructorAndAccessors)
+{
+    hypl::Environment environment;
+
+    const int& computed_delta_days = environment.delta_days();
+    double computed_dni_annual_energy = environment.dni_annual_energy();
+
+    const hypl::Location& location = environment.location();
+    const hypl::Atmosphere& atmosphere = environment.atmosphere();
+    
+    double computed_latitude = location.latitude();
+    double computed_io = atmosphere.io();
+    double computed_beta = atmosphere.beta();
+    hypl::Atmosphere::AttenuationModel computed_attenuation_model = atmosphere.attenuation_model();
+
+    double expected_latitude = 37.2 * hypl::mathconstants::degree;
+    double expected_io = 1110.0;
+    double expected_beta = 0.11;
+    hypl::Atmosphere::AttenuationModel expected_attenuation_model = hypl::Atmosphere::AttenuationModel::VB;
+    int expected_delta_days = 13;
+    double expected_dni_annual_energy = hypl::auxfunction::DniYearlyEnergy(environment);
+
+    EXPECT_DOUBLE_EQ(computed_delta_days, expected_delta_days);
+    EXPECT_DOUBLE_EQ(computed_latitude, expected_latitude);
+    EXPECT_DOUBLE_EQ(computed_io, expected_io);
+    EXPECT_DOUBLE_EQ(computed_beta, expected_beta);
+    EXPECT_EQ(computed_attenuation_model, expected_attenuation_model);
+    EXPECT_DOUBLE_EQ(computed_dni_annual_energy, expected_dni_annual_energy);    
+}
+
+TEST(EnvironmentTest, Constructor)
+{
+    double expected_latitude = -7.2 * hypl::mathconstants::degree;
+    hypl::Location expected_location(expected_latitude);
+
+    double expected_io = 1030.4;
+    double expected_beta = 0.1093;
+    hypl::Atmosphere::AttenuationModel expected_attenuation_model = hypl::Atmosphere::AttenuationModel::SW;
+    hypl::Atmosphere expected_atmosphere(expected_io, expected_beta, expected_attenuation_model);
+
+    int expected_delta_days = 1;
+    hypl::Environment environment(expected_location, expected_atmosphere, expected_delta_days);
+
+    double expected_dni_annual_energy = hypl::auxfunction::DniYearlyEnergy(environment);
+
+    const int& computed_delta_days = environment.delta_days();
+    double computed_dni_annual_energy = environment.dni_annual_energy();
+
+    const hypl::Location& computed_location = environment.location();
+    const hypl::Atmosphere& computed_atmosphere = environment.atmosphere();
+
+    double computed_latitude = computed_location.latitude();
+    double computed_io = computed_atmosphere.io();
+    double computed_beta = computed_atmosphere.beta();
+    hypl::Atmosphere::AttenuationModel computed_attenuation_model = computed_atmosphere.attenuation_model();
+
+    EXPECT_DOUBLE_EQ(computed_delta_days, expected_delta_days);
+    EXPECT_DOUBLE_EQ(computed_latitude, expected_latitude);
+    EXPECT_DOUBLE_EQ(computed_io, expected_io);
+    EXPECT_DOUBLE_EQ(computed_beta, expected_beta);
+    EXPECT_EQ(computed_attenuation_model, expected_attenuation_model);
+    EXPECT_DOUBLE_EQ(computed_dni_annual_energy, expected_dni_annual_energy);
+}
+
+TEST(EnvironmentTest, Mutators)
+{
+    // Setting up the initial values and creating the environment
+    double initial_latitude = 26.45 * hypl::mathconstants::degree;
+    hypl::Location initial_location(initial_latitude);
+
+    double initial_io = 1123.6;
+    double initial_beta = 0.1902;
+    hypl::Atmosphere::AttenuationModel initial_attenuation_model = hypl::Atmosphere::AttenuationModel::LH;
+    hypl::Atmosphere initial_atmosphere(initial_io, initial_beta, initial_attenuation_model);
+
+    int initial_delta_days = 1;
+    hypl::Environment environment(initial_location, initial_atmosphere, initial_delta_days);
+
+    // Verifying that the content of the environment is consistent with the initial values
+    double initial_dni_annual_energy = hypl::auxfunction::DniYearlyEnergy(environment);
+
+    const int& computed_delta_days = environment.delta_days();
+    double computed_dni_annual_energy = environment.dni_annual_energy();
+
+    const hypl::Location& computed_location = environment.location();
+    const hypl::Atmosphere& computed_atmosphere = environment.atmosphere();
+
+    double computed_latitude = computed_location.latitude();
+    double computed_io = computed_atmosphere.io();
+    double computed_beta = computed_atmosphere.beta();
+    hypl::Atmosphere::AttenuationModel computed_attenuation_model = computed_atmosphere.attenuation_model();
+
+    EXPECT_DOUBLE_EQ(computed_delta_days, initial_delta_days);
+    EXPECT_DOUBLE_EQ(computed_latitude, initial_latitude);
+    EXPECT_DOUBLE_EQ(computed_io, initial_io);
+    EXPECT_DOUBLE_EQ(computed_beta, initial_beta);
+    EXPECT_EQ(computed_attenuation_model, initial_attenuation_model);
+    EXPECT_DOUBLE_EQ(computed_dni_annual_energy, initial_dni_annual_energy);
+/*
+        void set_location(Location location);
+        void set_atmosphere(Atmosphere atmosphere);
+        void set_delta_days(int delta_days);
+        void set_location_and_atmosphere(Location location, Atmosphere atmosphere);
+*/
+
+    // Changing the content of the environment with mutators
+    double new_latitude = -50.31 * hypl::mathconstants::degree;
+    hypl::Location new_location(new_latitude);
+    environment.set_location(new_location);
+
+    double new_io = 999.466;
+    double new_beta = 0.122;
+    hypl::Atmosphere::AttenuationModel new_attenuation_model = hypl::Atmosphere::AttenuationModel::VB;
+    hypl::Atmosphere new_atmosphere(new_io, new_beta, new_attenuation_model);
+    environment.set_atmosphere(new_atmosphere);
+
+    int new_delta_days = 26;
+    environment.set_delta_days(new_delta_days);
+
+    // Verifying that the content of the environment is consistent with the new values    
+    double new_dni_annual_energy = hypl::auxfunction::DniYearlyEnergy(environment);
+
+    const int& new_computed_delta_days = environment.delta_days();
+    double new_computed_dni_annual_energy = environment.dni_annual_energy();
+
+    const hypl::Location& new_computed_location = environment.location();
+    const hypl::Atmosphere& new_computed_atmosphere = environment.atmosphere();
+
+    double new_computed_latitude = new_computed_location.latitude();
+    double new_computed_io = new_computed_atmosphere.io();
+    double new_computed_beta = new_computed_atmosphere.beta();
+    hypl::Atmosphere::AttenuationModel new_computed_attenuation_model = new_computed_atmosphere.attenuation_model();
+
+    EXPECT_DOUBLE_EQ(new_computed_delta_days, new_delta_days);
+    EXPECT_DOUBLE_EQ(new_computed_latitude, new_latitude);
+    EXPECT_DOUBLE_EQ(new_computed_io, new_io);
+    EXPECT_DOUBLE_EQ(new_computed_beta, new_beta);
+    EXPECT_EQ(new_computed_attenuation_model, new_attenuation_model);
+    EXPECT_DOUBLE_EQ(new_computed_dni_annual_energy, new_dni_annual_energy);
+
+    //Testing the last mutator
+    environment.set_location_and_atmosphere(initial_location, initial_atmosphere);
+
+    // Verifying that the content of the environment is consistent with the new values    
+    double new_dni_annual_energy2 = hypl::auxfunction::DniYearlyEnergy(environment);
+
+    const int& new_computed_delta_days2 = environment.delta_days();
+    double new_computed_dni_annual_energy2 = environment.dni_annual_energy();
+
+    const hypl::Location& new_computed_location2 = environment.location();
+    const hypl::Atmosphere& new_computed_atmosphere2 = environment.atmosphere();
+
+    double new_computed_latitude2 = new_computed_location2.latitude();
+    double new_computed_io2 = new_computed_atmosphere2.io();
+    double new_computed_beta2 = new_computed_atmosphere2.beta();
+    hypl::Atmosphere::AttenuationModel new_computed_attenuation_model2 = new_computed_atmosphere2.attenuation_model();
+
+    EXPECT_DOUBLE_EQ(new_computed_delta_days2, new_delta_days);
+    EXPECT_DOUBLE_EQ(new_computed_latitude2, initial_latitude);
+    EXPECT_DOUBLE_EQ(new_computed_io2, initial_io);
+    EXPECT_DOUBLE_EQ(new_computed_beta2, initial_beta);
+    EXPECT_EQ(new_computed_attenuation_model2, initial_attenuation_model);
+    EXPECT_DOUBLE_EQ(new_computed_dni_annual_energy2, new_dni_annual_energy2);
+}
+
 class SimpleFunctor
 {
 public:
