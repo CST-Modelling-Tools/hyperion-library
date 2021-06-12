@@ -33,7 +33,7 @@ double hypl::auxfunction::DniDailyEnergy(double declination, const Environment& 
     double t_end = 0.0; //Considering a symmetric DNI curve around true solar noon.
 
     DniASHRAE dni(declination, environment);
-    return 2.0 * DEIntegrator<DniASHRAE>::Integrate(dni, t_start, t_end, 1e-6);
+    return 2.0 * DEIntegrator<DniASHRAE>::Integrate(dni, t_start, t_end, 1e-12);
 }
 
 double hypl::auxfunction::DniYearlyEnergy(const Environment& environment)
