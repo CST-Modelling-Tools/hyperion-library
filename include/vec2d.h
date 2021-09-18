@@ -2,6 +2,7 @@
 
 #include "export.h"
 #include <cmath>
+#include <algorithm>
 #include <iostream>
 
 namespace hypl

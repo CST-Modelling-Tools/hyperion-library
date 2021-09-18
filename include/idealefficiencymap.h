@@ -44,6 +44,7 @@ namespace hypl
         void set_environment(Environment environment) {m_environment = environment; update();}
         void set_boundaries(Boundaries boundaries) {m_boundaries = boundaries; regenerate();}
         void set_receivers(std::vector<Receiver> receivers) {m_receivers = receivers; update();}
+        void set_receivers_radius(double radius);
         void set_nrows(int nrows) {m_nrows = nrows; regenerate();}
         void set_ncolumns(int ncolumns) {m_ncolumns = ncolumns; regenerate();}
         void set_dimensions(int nrows, int ncolumns) {m_nrows = nrows; m_ncolumns = ncolumns; regenerate();}

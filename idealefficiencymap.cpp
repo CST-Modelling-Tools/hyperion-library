@@ -49,6 +49,11 @@ void hypl::IdealEfficiencyMap::update()
     for (auto & element : m_heliostats) element->update ();
 }
 
+void hypl::IdealEfficiencyMap::set_receivers_radius(double radius)
+{
+    for (auto & element : m_receivers) element.set_radius (radius);
+    for (auto & element : m_heliostats) element->update_receivers_parameters(); 
+}
 
 void hypl::IdealEfficiencyMap::EvaluateAnnualEfficiencies()
 {

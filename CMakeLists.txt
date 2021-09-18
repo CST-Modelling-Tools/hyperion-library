@@ -51,9 +51,22 @@ set(Sources
 add_library(${This} SHARED ${Sources} ${Headers})
 
 add_subdirectory(test)
+add_subdirectory(apps)
 
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 set_target_properties(${PROJECT_NAME} PROPERTIES DEFINE_SYMBOL pepe)
 include(CPack)
+
+add_custom_command(TARGET ${This} POST_BUILD 
+  COMMAND "${CMAKE_COMMAND}" -E copy 
+     "$<TARGET_FILE:${This}>"
+     "./test/$<CONFIGURATION>/$<TARGET_FILE_NAME:${This}>" 
+  COMMENT "Copying to test directory")
+
+  add_custom_command(TARGET ${This} POST_BUILD 
+  COMMAND "${CMAKE_COMMAND}" -E copy 
+     "$<TARGET_FILE:${This}>"
+     "./apps/$<CONFIGURATION>/$<TARGET_FILE_NAME:${This}>" 
+  COMMENT "Copying to apps directory")
