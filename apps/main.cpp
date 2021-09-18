@@ -45,11 +45,15 @@ int main(int, char**) {
     std::cout << "Initial receiver radius " << rcv_radius << std::endl;
     double rcv_limit = heliostatfield.heliostats().at(5)->shading_limit().at(0);
     std::cout << "Receiver Shadow Limit: " << rcv_limit << std::endl;
+    double rcv_angle = heliostatfield.heliostats().at(5)->receiver_subtended_angle().at(0);
+    std::cout << "Receiver subtended angle: " << rcv_angle << std::endl;
     std::cout << "Helio 1\n";
     rcv_radius = heliostatfield.heliostats().at(1)->receivers().at(0).radius();
     std::cout << "Initial receiver radius " << rcv_radius << std::endl;
     rcv_limit = heliostatfield.heliostats().at(1)->shading_limit().at(0);
     std::cout << "Receiver Shadow Limit: " << rcv_limit << std::endl;
+    rcv_angle = heliostatfield.heliostats().at(1)->receiver_subtended_angle().at(0);
+    std::cout << "Receiver subtended angle: " << rcv_angle << std::endl;
 
     //Check rcv update
     heliostatfield.set_receivers_radius(10.6);
@@ -58,11 +62,15 @@ int main(int, char**) {
     std::cout << "Initial receiver radius " << rcv_radius << std::endl;
     rcv_limit = heliostatfield.heliostats().at(5)->shading_limit().at(0);
     std::cout << "Receiver Shadow Limit: " << rcv_limit << std::endl;
+    rcv_angle = heliostatfield.heliostats().at(5)->receiver_subtended_angle().at(0);
+    std::cout << "Receiver subtended angle: " << rcv_angle << std::endl;
     std::cout << "Helio 1\n";
     rcv_radius = heliostatfield.heliostats().at(1)->receivers().at(0).radius();
     std::cout << "Initial receiver radius " << rcv_radius << std::endl;
     rcv_limit = heliostatfield.heliostats().at(1)->shading_limit().at(0);
     std::cout << "Receiver Shadow Limit: " << rcv_limit << std::endl;
+    rcv_angle = heliostatfield.heliostats().at(1)->receiver_subtended_angle().at(0);
+    std::cout << "Receiver subtended angle: " << rcv_angle << std::endl;
 
     //Calculate field efficiency
     start_time = std::chrono::high_resolution_clock::now();

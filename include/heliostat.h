@@ -46,6 +46,7 @@ namespace hypl
         const std::vector<double>& attenuation() const { return m_attenuation; }
         const std::vector<double>& slant_range() const { return m_slant_range; }
         const std::vector<double>& shading_limit() const { return m_shading_limit; }
+        const std::vector<double>& receiver_subtended_angle() const { return m_receiver_subtended_angle; }
         const std::vector<vec3d>& reflected_unit_vector() const { return m_reflected_unit_vector; }
         const double annual_energy_per_unit_area();
         const double annual_ideal_efficiency();
