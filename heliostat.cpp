@@ -124,23 +124,44 @@ double hypl::Heliostat::HeliostatDailyEnergyPerUnitArea(double declination)
     return DEIntegrator<HeliostatPowerPerUnitArea>::Integrate(heliostatPowerPerUnitArea, t_start, t_end, 1e-4);
 }
 
+/*
 const double hypl::Heliostat::annual_energy_per_unit_area()
 {
     if( m_annual_energy_per_unit_area < 0.0)
     {
         double sum = 0.0;
-        int day_index = 1;
-        int delta_days = m_environment.delta_days();
-        while (day_index < 366)
+        int day_number = 1;
+        while (day_number < 366)
         {
             // To save time, calculate HERE the angle subtended by the sun here AND the spillage factor, as they are only function of day number
-            sum += HeliostatDailyEnergyPerUnitArea(auxfunction::SolarDeclinationByIndex(day_index));
-            day_index += delta_days;
+            sum += HeliostatDailyEnergyPerUnitArea(auxfunction::SolarDeclinationByDayNumber(day_number));
+            day_number++;
         }
         m_annual_energy_per_unit_area = sum;
     }
     return  m_annual_energy_per_unit_area;
 }
+
+*/
+
+
+const double hypl::Heliostat::annual_energy_per_unit_area()
+{
+    if( m_annual_energy_per_unit_area < 0.0)
+    {
+        double sum = 0.0;
+        int day_number = 174;
+        while (day_number < 356)
+        {
+            // To save time, calculate HERE the angle subtended by the sun here AND the spillage factor, as they are only function of day number
+            sum += HeliostatDailyEnergyPerUnitArea(auxfunction::SolarDeclinationByDayNumber(day_number));
+            day_number++;
+        }
+        m_annual_energy_per_unit_area = 2.0 * sum + 0.5 * HeliostatDailyEnergyPerUnitArea(auxfunction::SolarDeclinationByDayNumber(173));
+    }
+    return  m_annual_energy_per_unit_area;
+}
+
 
 const double hypl::Heliostat::annual_ideal_efficiency()
 {

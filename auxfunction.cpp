@@ -36,15 +36,28 @@ double hypl::auxfunction::DniDailyEnergy(double declination, const Environment& 
     return 2.0 * DEIntegrator<DniASHRAE>::Integrate(dni, t_start, t_end, 1e-12);
 }
 
+/*
 double hypl::auxfunction::DniYearlyEnergy(const Environment& environment)
 {
     double sum = 0.0;
-    int day_index = 1;
-    int delta_days = environment.delta_days();
-    while (day_index < 183)
+    int day_number = 1;
+    while (day_number < 366)
     {
-        sum += DniDailyEnergy(SolarDeclinationByIndex(day_index), environment);
-        day_index += delta_days;
+        sum += DniDailyEnergy(SolarDeclinationByDayNumber(day_number), environment);
+        day_number++;
     }
-    return (2.0*sum)+DniDailyEnergy(SolarDeclinationByIndex(183), environment);
+    return sum;
+}
+*/
+
+double hypl::auxfunction::DniYearlyEnergy(const Environment& environment)
+{
+    double sum = 0.0;
+    int day_number = 174;
+    while (day_number < 356)
+    {
+        sum += DniDailyEnergy(SolarDeclinationByDayNumber(day_number), environment);
+        day_number++;
+    }
+    return 2.0 * sum  + 0.5 * DniDailyEnergy(SolarDeclinationByDayNumber(173), environment);
 }
