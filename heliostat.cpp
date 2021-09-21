@@ -24,10 +24,10 @@ void hypl::Heliostat::update()
     if( m_attenuation.empty() == false ) m_attenuation.clear();
     if( m_reflected_unit_vector.empty() == false ) m_reflected_unit_vector.clear();
 
-    int vetors_size = m_receivers.size();
-    m_slant_range.reserve(vetors_size);
-    m_attenuation.reserve(vetors_size);
-    m_reflected_unit_vector.reserve(vetors_size);
+    int nreceivers = m_receivers.size();
+    m_slant_range.reserve(nreceivers);
+    m_attenuation.reserve(nreceivers);
+    m_reflected_unit_vector.reserve(nreceivers);
 
     vec3d aux_vector3d;
     double slant_range = 0.0;

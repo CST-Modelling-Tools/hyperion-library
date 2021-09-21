@@ -39,7 +39,7 @@ void hypl::Environment::set_location(Location location)
 
 void hypl::Environment::set_atmosphere(Atmosphere atmosphere) 
 { 
-    m_atmosphere = atmosphere; m_dni_annual_energy = auxfunction::DniYearlyEnergy( (*this) ); 
+    m_atmosphere = atmosphere; m_dni_annual_energy = auxfunction::DniYearlyEnergy( (*this) );
 }
 
 void hypl::Environment::set_delta_days(int delta_days)
