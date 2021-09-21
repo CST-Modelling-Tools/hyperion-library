@@ -3,6 +3,7 @@
 #include "mathconstants.h"
 #include "dniashrae.h"
 #include "deintegrator.h"
+#include "gcf.h"
 
 int hypl::auxfunction::DayNumber(int day_index)
 {
@@ -60,4 +61,21 @@ double hypl::auxfunction::DniYearlyEnergy(const Environment& environment)
         day_number++;
     }
     return 2.0 * sum  + 0.5 * DniDailyEnergy(SolarDeclinationByDayNumber(173), environment);
+}
+
+
+double hypl::auxfunction::Distance_earth_sun(int day_number)
+{
+    double average_distance = 149597870.0; //in kilometers
+    double beta = (gcf::TwoPi * day_number) / 365.;
+    double two_beta = 2.0 * beta;
+    double aux = 1.00011 + 0.034221 * cos(beta) + 0.00128 * sin(beta) + 0.000719 * cos(two_beta) + 0.000077 * sin(two_beta);
+
+    return sqrt( average_distance * (average_distance / aux) );
+}
+
+
+double hypl::auxfunction:: Subtended_angle(double ratio_distance)
+{
+    return ( gcf::TwoPi * (1.0 - sqrt(1.0 - ratio_distance*ratio_distance)));
 }

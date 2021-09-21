@@ -18,6 +18,7 @@ namespace gcf
     const double infinity = HUGE_VAL;
     const double Epsilon = DBL_EPSILON;
     const double Ecliptic = 23.5*degree;
+    const double Sun_radius = 695700.0; //kilometers
 
     template<class T>
     T pow2(T x) {return x*x;}

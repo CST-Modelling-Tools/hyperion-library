@@ -32,8 +32,9 @@ namespace hypl
         struct TrackingInfo {
             double attenuation;
             double cosine_factor;
-            double receiver_shadow;
             double ideal_efficiency;
+            double receiver_shadow;
+            double spillage;
             int aiming_at_receiver_index;
         };
 
@@ -45,23 +46,20 @@ namespace hypl
         const vec3d& center() const { return m_center; }
         const std::vector<double>& attenuation() const { return m_attenuation; }
         const std::vector<double>& slant_range() const { return m_slant_range; }
-        const std::vector<double>& shading_limit() const { return m_shading_limit; }
-        const std::vector<double>& receiver_subtended_angle() const { return m_receiver_subtended_angle; }
         const std::vector<vec3d>& reflected_unit_vector() const { return m_reflected_unit_vector; }
         const double annual_energy_per_unit_area();
         const double annual_ideal_efficiency();
 
         //Mutators
         void update();
-        void update_receivers_parameters();
         void set_center(vec3d center) {m_center = center; update();}
 
         //Public functions
-        TrackingInfo Track(vec3d& sun_vector) const;
-        TrackingInfo Track(double hour_angle, double declination) const;
-        double HeliostatDailyEnergyPerUnitArea(double declination);
-        double get_receiver_shading_limit(Receiver& receiver, double slant_range) const;
-        double get_receiver_subtended_angle(Receiver& receiver, double slant_range) const;
+        TrackingInfo Track(vec3d& sun_vector, int day_number) const;
+        TrackingInfo Track(double hour_angle, double declination, int day_number) const;
+        double HeliostatDailyEnergyPerUnitArea(int day_number);
+        double get_spillage(int receiver_id, int day_number) const;
+        double get_receiver_shading(vec3d& sun_vector, int receiver_id) const;
 
     private:
         Environment& m_environment;
@@ -70,8 +68,6 @@ namespace hypl
 
         std::vector<double> m_attenuation;
         std::vector<double> m_slant_range;
-        std::vector<double> m_shading_limit;
-        std::vector<double> m_receiver_subtended_angle;
         std::vector<vec3d> m_reflected_unit_vector;
 
         double m_annual_energy_per_unit_area;
