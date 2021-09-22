@@ -50,11 +50,11 @@ int main(int, char**) {
     std::cout << "Receiver radius " << rcv_radius << std::endl;
 
     int day = 173;
-    double angle = environment.get_sun_subtended_angle(day+11); //day difference in numbering
-    std::cout << "Day number: " << day+11 << ",  Sun Subtended angle: " << angle << ", Declination: " << hypl::auxfunction::SolarDeclinationByDayNumber(day) << std::endl;
+    double angle = environment.sun_subtended_angle()[day-1]; //day difference in numbering
+    std::cout << "Day number: " << day << ",  Sun Subtended angle: " << angle << ", Declination: " << hypl::auxfunction::SolarDeclinationByDayNumber(day) << std::endl;
     day = 356;
-    angle = environment.get_sun_subtended_angle(day+11); //day difference in numbering
-    std::cout << "Day number: " << day+11 << ",  Sun Subtended angle: " << angle << ", Declination: " << hypl::auxfunction::SolarDeclinationByDayNumber(day) << std::endl;
+    angle = environment.sun_subtended_angle()[day-1]; //day difference in numbering
+    std::cout << "Day number: " << day << ",  Sun Subtended angle: " << angle << ", Declination: " << hypl::auxfunction::SolarDeclinationByDayNumber(day) << std::endl;
 
     //Calculate field efficiency
     start_time = std::chrono::high_resolution_clock::now();

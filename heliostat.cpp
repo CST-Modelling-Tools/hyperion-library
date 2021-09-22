@@ -48,7 +48,7 @@ void hypl::Heliostat::update()
 double hypl::Heliostat::get_spillage(int receiver_id, int day_number) const
 {
 
-    double sun_subtended_angle = m_environment.get_sun_subtended_angle(day_number);
+    double sun_subtended_angle = m_environment.sun_subtended_angle()[day_number-1];
     double receiver_subtended_angle = auxfunction::Subtended_angle(m_receivers[receiver_id].radius() / m_slant_range[receiver_id]);
 
     if( receiver_subtended_angle < sun_subtended_angle) return receiver_subtended_angle / sun_subtended_angle;
@@ -112,7 +112,7 @@ hypl::Heliostat::TrackingInfo hypl::Heliostat::Track(double hour_angle, double d
 
 double hypl::Heliostat::HeliostatDailyEnergyPerUnitArea(int day_number)
 {
-    double declination = m_environment.get_declination(day_number);
+    double declination = m_environment.declination()[day_number-1];
     double wo = m_environment.location().HourAngleLimit(declination);
     double t_start = -wo/mathconstants::earth_rotational_speed;
     double t_end = -t_start;
