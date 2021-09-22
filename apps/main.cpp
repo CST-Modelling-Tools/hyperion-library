@@ -15,7 +15,7 @@ int main(int, char**) {
     double env_beta {0.112};
     auto att_model = hypl::Atmosphere::AttenuationModel::SW;
     hypl::Atmosphere atmosphere(env_io,env_beta,att_model);
-    hypl::Environment environment(location, atmosphere, 1);
+    hypl::Environment environment(location, atmosphere);
 
     // Multiple Receivers
     // std::vector<hypl::Receiver> receivers;

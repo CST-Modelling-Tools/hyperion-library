@@ -306,7 +306,6 @@ TEST(EnvironmentTest, DefaultConstructorAndAccessors)
 {
     hypl::Environment environment;
 
-    const int& computed_delta_days = environment.delta_days();
     double computed_dni_annual_energy = environment.dni_annual_energy();
 
     const hypl::Location& location = environment.location();
@@ -324,7 +323,6 @@ TEST(EnvironmentTest, DefaultConstructorAndAccessors)
     int expected_delta_days = 13;
     double expected_dni_annual_energy = hypl::auxfunction::DniYearlyEnergy(environment);
 
-    EXPECT_DOUBLE_EQ(computed_delta_days, expected_delta_days);
     EXPECT_DOUBLE_EQ(computed_latitude, expected_latitude);
     EXPECT_DOUBLE_EQ(computed_io, expected_io);
     EXPECT_DOUBLE_EQ(computed_beta, expected_beta);
@@ -342,12 +340,10 @@ TEST(EnvironmentTest, Constructor)
     hypl::Atmosphere::AttenuationModel expected_attenuation_model = hypl::Atmosphere::AttenuationModel::SW;
     hypl::Atmosphere expected_atmosphere(expected_io, expected_beta, expected_attenuation_model);
 
-    int expected_delta_days = 1;
-    hypl::Environment environment(expected_location, expected_atmosphere, expected_delta_days);
+    hypl::Environment environment(expected_location, expected_atmosphere);
 
     double expected_dni_annual_energy = hypl::auxfunction::DniYearlyEnergy(environment);
 
-    const int& computed_delta_days = environment.delta_days();
     double computed_dni_annual_energy = environment.dni_annual_energy();
 
     const hypl::Location& computed_location = environment.location();
@@ -358,7 +354,6 @@ TEST(EnvironmentTest, Constructor)
     double computed_beta = computed_atmosphere.beta();
     hypl::Atmosphere::AttenuationModel computed_attenuation_model = computed_atmosphere.attenuation_model();
 
-    EXPECT_DOUBLE_EQ(computed_delta_days, expected_delta_days);
     EXPECT_DOUBLE_EQ(computed_latitude, expected_latitude);
     EXPECT_DOUBLE_EQ(computed_io, expected_io);
     EXPECT_DOUBLE_EQ(computed_beta, expected_beta);
@@ -377,13 +372,11 @@ TEST(EnvironmentTest, Mutators)
     hypl::Atmosphere::AttenuationModel initial_attenuation_model = hypl::Atmosphere::AttenuationModel::LH;
     hypl::Atmosphere initial_atmosphere(initial_io, initial_beta, initial_attenuation_model);
 
-    int initial_delta_days = 1;
-    hypl::Environment environment(initial_location, initial_atmosphere, initial_delta_days);
+    hypl::Environment environment(initial_location, initial_atmosphere);
 
     // Verifying that the content of the environment is consistent with the initial values
     double initial_dni_annual_energy = hypl::auxfunction::DniYearlyEnergy(environment);
 
-    const int& computed_delta_days = environment.delta_days();
     double computed_dni_annual_energy = environment.dni_annual_energy();
 
     const hypl::Location& computed_location = environment.location();
@@ -394,7 +387,6 @@ TEST(EnvironmentTest, Mutators)
     double computed_beta = computed_atmosphere.beta();
     hypl::Atmosphere::AttenuationModel computed_attenuation_model = computed_atmosphere.attenuation_model();
 
-    EXPECT_DOUBLE_EQ(computed_delta_days, initial_delta_days);
     EXPECT_DOUBLE_EQ(computed_latitude, initial_latitude);
     EXPECT_DOUBLE_EQ(computed_io, initial_io);
     EXPECT_DOUBLE_EQ(computed_beta, initial_beta);
@@ -418,13 +410,10 @@ TEST(EnvironmentTest, Mutators)
     hypl::Atmosphere new_atmosphere(new_io, new_beta, new_attenuation_model);
     environment.set_atmosphere(new_atmosphere);
 
-    int new_delta_days = 26;
-    environment.set_delta_days(new_delta_days);
 
     // Verifying that the content of the environment is consistent with the new values    
     double new_dni_annual_energy = hypl::auxfunction::DniYearlyEnergy(environment);
 
-    const int& new_computed_delta_days = environment.delta_days();
     double new_computed_dni_annual_energy = environment.dni_annual_energy();
 
     const hypl::Location& new_computed_location = environment.location();
@@ -435,7 +424,6 @@ TEST(EnvironmentTest, Mutators)
     double new_computed_beta = new_computed_atmosphere.beta();
     hypl::Atmosphere::AttenuationModel new_computed_attenuation_model = new_computed_atmosphere.attenuation_model();
 
-    EXPECT_DOUBLE_EQ(new_computed_delta_days, new_delta_days);
     EXPECT_DOUBLE_EQ(new_computed_latitude, new_latitude);
     EXPECT_DOUBLE_EQ(new_computed_io, new_io);
     EXPECT_DOUBLE_EQ(new_computed_beta, new_beta);
@@ -448,7 +436,6 @@ TEST(EnvironmentTest, Mutators)
     // Verifying that the content of the environment is consistent with the new values    
     double new_dni_annual_energy2 = hypl::auxfunction::DniYearlyEnergy(environment);
 
-    const int& new_computed_delta_days2 = environment.delta_days();
     double new_computed_dni_annual_energy2 = environment.dni_annual_energy();
 
     const hypl::Location& new_computed_location2 = environment.location();
@@ -459,7 +446,6 @@ TEST(EnvironmentTest, Mutators)
     double new_computed_beta2 = new_computed_atmosphere2.beta();
     hypl::Atmosphere::AttenuationModel new_computed_attenuation_model2 = new_computed_atmosphere2.attenuation_model();
 
-    EXPECT_DOUBLE_EQ(new_computed_delta_days2, new_delta_days);
     EXPECT_DOUBLE_EQ(new_computed_latitude2, initial_latitude);
     EXPECT_DOUBLE_EQ(new_computed_io2, initial_io);
     EXPECT_DOUBLE_EQ(new_computed_beta2, initial_beta);
@@ -566,7 +552,7 @@ TEST(DniASHRAETest, ConstructorANDAssesors)
     hypl::Atmosphere atmosphere(io, beta, attenuation_model);
 
     int delta_days = 13;
-    hypl::Environment environment(location, atmosphere, delta_days);
+    hypl::Environment environment(location, atmosphere);
 
     double x = 0.3;
     double declination = 23.45 * (2.0 * x - 1.0) * hypl::mathconstants::degree;
@@ -598,8 +584,7 @@ TEST(DniASHRAETest, operatorFunction)
     hypl::Atmosphere::AttenuationModel attenuation_model = hypl::Atmosphere::AttenuationModel::LH;
     hypl::Atmosphere atmosphere(io, beta, attenuation_model);
 
-    int delta_days = 13;
-    hypl::Environment environment(location, atmosphere, delta_days);
+    hypl::Environment environment(location, atmosphere);
 
     double x = 0.67;
     double declination = 23.45 * (2.0 * x - 1.0) * hypl::mathconstants::degree;
@@ -698,125 +683,6 @@ TEST(AuxfunctionTest, SolarDeclinationByIndex)
         day_index += delta_day_index;
     }
 }
-
-TEST(AuxfunctionTest, DniDailyEnergy)
-{
-    const int nrows = 36;
-    const int ncolumns = 5;
-    double expected_values[nrows][nrows] = { 
-        {-0.3303908274025265, -0.494626310015193, 940.8, 0.2345, 2.752001284536965e7},
-        {-0.3303908274025265, -0.494626310015193, 940.8, 0.101, 3.515025596715044e7},
-        {-0.3303908274025265, -0.494626310015193, 1201.46, 0.2345, 3.514476470365415e7},
-        {-0.3303908274025265, -0.494626310015193, 1201.46, 0.101, 4.488905881621234e7},
-        {-0.3303908274025265, 0.002443460952792062, 940.8, 0.2345, 2.442451219326312e7},
-        {-0.3303908274025265, 0.002443460952792062, 940.8, 0.101, 3.134837121108109e7},
-        {-0.3303908274025265, 0.002443460952792062, 1201.46, 0.2345, 3.119161821823757e7},
-        {-0.3303908274025265, 0.002443460952792062, 1201.46, 0.101, 4.003381598136214e7},
-        {-0.3303908274025265, 0.991347015132779, 940.8, 0.2345, 6.082032643181693e6},
-        {-0.3303908274025265, 0.991347015132779, 940.8, 0.101, 1.26584900533368e7},
-        {-0.3303908274025265, 0.991347015132779, 1201.46, 0.2345, 7.767133226484989e6},
-        {-0.3303908274025265, 0.991347015132779, 1201.46, 0.101, 1.616567757172835e7},
-        {0.2478367537831948, -0.494626310015193, 940.8, 0.2345, 2.008532715097575e7},
-        {0.2478367537831948, -0.494626310015193, 940.8, 0.101, 2.716703946630119e7},
-        {0.2478367537831948, -0.494626310015193, 1201.46, 0.2345, 2.565020956506306e7},
-        {0.2478367537831948, -0.494626310015193, 1201.46, 0.101, 3.469399578782125e7},
-        {0.2478367537831948, 0.002443460952792062, 940.8, 0.2345, 2.470287945019904e7},
-        {0.2478367537831948, 0.002443460952792062, 940.8, 0.101, 3.154467271148444e7},
-        {0.2478367537831948, 0.002443460952792062, 1201.46, 0.2345, 3.154711048494489e7},
-        {0.2478367537831948, 0.002443460952792062, 1201.46, 0.101, 4.028450518275948e7},
-        {0.2478367537831948, 0.991347015132779, 940.8, 0.2345, 2.660085738338308e7},
-        {0.2478367537831948, 0.991347015132779, 940.8, 0.101, 3.63938289834597e7},
-        {0.2478367537831948, 0.991347015132779, 1201.46, 0.2345, 3.397094612227831e7},
-        {0.2478367537831948, 0.991347015132779, 1201.46, 0.101, 4.647717875262276e7},
-        {0.3490658503988659, -0.494626310015193, 940.8, 0.2345, 1.829669899718514e7},
-        {0.3490658503988659, -0.494626310015193, 940.8, 0.101, 2.537682750305485e7},
-        {0.3490658503988659, -0.494626310015193, 1201.46, 0.2345, 2.336602038388398e7},
-        {0.3490658503988659, -0.494626310015193, 1201.46, 0.101, 3.240778398365252e7},
-        {0.3490658503988659, 0.002443460952792062, 940.8, 0.2345, 2.440071696976267e7},
-        {0.3490658503988659, 0.002443460952792062, 940.8, 0.101, 3.134916803744038e7},
-        {0.3490658503988659, 0.002443460952792062, 1201.46, 0.2345, 3.116123024074304e7},
-        {0.3490658503988659, 0.002443460952792062, 1201.46, 0.101, 4.003483357808579e7},
-        {0.3490658503988659, 0.991347015132779, 940.8, 0.2345, 2.990615635957539e7},
-        {0.3490658503988659, 0.991347015132779, 940.8, 0.101, 4.031944766765073e7},
-        {0.3490658503988659, 0.991347015132779, 1201.46, 0.2345, 3.819201809074771e7},
-        {0.3490658503988659, 0.991347015132779, 1201.46, 0.101, 5.149043749444693e7}      
-    };
-
-    int delta_days = 13;
-    hypl::Atmosphere::AttenuationModel attenuation_model = hypl::Atmosphere::AttenuationModel::VB;
-
-    for( int i = 0; i < nrows; i++)
-    {
-        double declination = expected_values[i][0];
-        double latitude = expected_values[i][1];
-        double io = expected_values[i][2];
-        double beta = expected_values[i][3];
-        double expected_dni_daily_energy = expected_values[i][4];
-
-        hypl::Location location(latitude);
-        hypl::Atmosphere atmosphere(io, beta, attenuation_model);
-        hypl::Environment environment(location, atmosphere, delta_days);
-        double computed_dni_daily_energy =  hypl::auxfunction::DniDailyEnergy(declination, environment);
-
-        double percentage_error = 100 * ( (computed_dni_daily_energy/expected_dni_daily_energy) - 1.0 );
-        EXPECT_NEAR(percentage_error, 0.0, 5e-6) << "i = " << i;
-    }
-}
-
-TEST(AuxfunctionTest, DniYearlyEnergy)
-{
-    const int nrows = 27;
-    const int ncolumns = 4;
-    double expected_values[nrows][nrows] = { 
-        {-0.7965682706102121, 1063.8, 0.2345, 8.46000843768372e9},
-        {-0.7965682706102121, 1063.8, 0.101, 1.176027950784292e10},
-        {-0.7965682706102121, 1063.8, 0.158, 1.013981107441368e10},
-        {-0.7965682706102121, 879.64, 0.2345, 6.995451985452253e9},
-        {-0.7965682706102121, 879.64, 0.101, 9.72439581338499e9},
-        {-0.7965682706102121, 879.64, 0.158, 8.38445517343227e9},
-        {-0.7965682706102121, 1101.27, 0.2345, 8.75799350645606e9},
-        {-0.7965682706102121, 1101.27, 0.101, 1.217450931904698e10},
-        {-0.7965682706102121, 1101.27, 0.158, 1.049696347238161e10},
-        {0.2246238747316702, 1063.8, 0.2345, 1.005158683990919e10},
-        {0.2246238747316702, 1063.8, 0.101, 1.292738237183389e10},
-        {0.2246238747316702, 1063.8, 0.158, 1.154892767746369e10},
-        {0.2246238747316702, 879.64, 0.2345, 8.31150389909542e9},
-        {0.2246238747316702, 879.64, 0.101, 1.06894553765369e10},
-        {0.2246238747316702, 879.64, 0.158, 9.54963220737371e9},
-        {0.2246238747316702, 1101.27, 0.2345, 1.040563173452415e10},
-        {0.2246238747316702, 1101.27, 0.101, 1.338272079773407e10},
-        {0.2246238747316702, 1101.27, 0.158, 1.195571308832527e10},
-        {0.6597344572538565, 1063.8, 0.2345, 9.15638050355709e9},
-        {0.6597344572538565, 1063.8, 0.101, 1.232092207756679e10},
-        {0.6597344572538565, 1063.8, 0.158, 1.078339233409766e10},
-        {0.6597344572538565, 879.64, 0.2345, 7.571271428980038e9},
-        {0.6597344572538565, 879.64, 0.101, 1.018798260604517e10},
-        {0.6597344572538565, 879.64, 0.158, 8.91662270423545e9},
-        {0.6597344572538565, 1101.27, 0.2345, 9.47889373674781e9},
-        {0.6597344572538565, 1101.27, 0.101, 1.275489928216017e10},
-        {0.6597344572538565, 1101.27, 0.158, 1.116321345720224e10}
-    };
-
-    int delta_days = 1;
-    hypl::Atmosphere::AttenuationModel attenuation_model = hypl::Atmosphere::AttenuationModel::VB;
-
-    for( int i = 0; i < nrows; i++)
-    {
-        double latitude = expected_values[i][0];
-        double io = expected_values[i][1];
-        double beta = expected_values[i][2];
-        double expected_dni_yearly_energy = expected_values[i][3];
-
-        hypl::Location location(latitude);
-        hypl::Atmosphere atmosphere(io, beta, attenuation_model);
-        hypl::Environment environment(location, atmosphere, delta_days);
-        double computed_dni_yearly_energy =  hypl::auxfunction::DniYearlyEnergy(environment);
-
-        double percentage_error = 100 * ( (computed_dni_yearly_energy/expected_dni_yearly_energy) - 1.0 );
-        EXPECT_NEAR(percentage_error, 0.0, 0.25) << "i = " << i;
-    }
-}
-
 
 int main(int argc, char* argv[])
 {

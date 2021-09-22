@@ -27,8 +27,7 @@ TEST(Heliostat, ConstructorANDBasicAccessors)
     auto expected_attenuation_model = hypl::Atmosphere::AttenuationModel::SW;
     hypl::Atmosphere expected_atmosphere(expected_io, expected_beta, expected_attenuation_model);
 
-    int expected_delta_days = 1;
-    hypl::Environment expected_environment(expected_location, expected_atmosphere, expected_delta_days);
+    hypl::Environment expected_environment(expected_location, expected_atmosphere);
 
     std::vector<hypl::Receiver> expected_receivers;
 
@@ -46,7 +45,6 @@ TEST(Heliostat, ConstructorANDBasicAccessors)
     auto computed_environment = heliostat.environment();
     auto computed_location = computed_environment.location();
     auto computed_atmosphere = computed_environment.atmosphere();
-    int computed_delta_days = computed_environment.delta_days();
 
     double computed_latitude = computed_location.latitude();
     double computed_io = computed_atmosphere.io();
@@ -89,7 +87,7 @@ TEST(Heliostat, NoneBasicAccessors)
     hypl::Atmosphere atmosphere(io, beta, attenuation_model);
 
     int delta_days = 3;
-    hypl::Environment environment(location, atmosphere, delta_days);
+    hypl::Environment environment(location, atmosphere);
 
     std::vector<hypl::Receiver> receivers;
 
