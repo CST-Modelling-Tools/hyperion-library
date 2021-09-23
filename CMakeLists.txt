@@ -22,7 +22,7 @@ set(Headers
     ./include/environment.h 
     ./include/export.h 
     ./include/heliostat.h 
-    ./include/heliostatinstantaneousefficiency.h
+    ./include/processheliostatfunctor.h
     ./include/idealefficiencymap.h 
     ./include/location.h 
     ./include/mathconstants.h 
@@ -36,7 +36,7 @@ set(Sources
     auxfunction.cpp 
     environment.cpp 
     heliostat.cpp
-    heliostatinstantaneousefficiency.cpp
+    processheliostatfunctor.cpp
     idealefficiencymap.cpp     
     location.cpp
     vec2d.cpp 

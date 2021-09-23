@@ -5,7 +5,7 @@
 
 #include "idealefficiencymap.h"
 #include "auxfunction.h"
-#include "heliostatinstantaneousefficiency.h"
+#include "processheliostatfunctor.h"
 
 
 hypl::IdealEfficiencyMap::IdealEfficiencyMap(Environment environment, Boundaries boundaries, 
@@ -87,13 +87,13 @@ void hypl::IdealEfficiencyMap::ProcessDay(int const& day_number, Heliostat::Idea
     double wo = m_environment.location().HourAngleLimit(declination);
     double hour_angle = -wo;
     while (hour_angle < wo)
-        {
-            vec3d sun_vector = m_environment.location().SolarVector(hour_angle, declination);
-            double dni = weight * m_environment.atmosphere().DniFromSz(sun_vector.z);
-            HeliostatInstantaneousEfficiency AuxFunctor(sun_vector, sun_subtended_angle, ideal_efficiency_type, dni);
-            
-            direct_insolation += dni;
-            std::for_each(std::execution::par_unseq, m_heliostat.begin(), m_heliostat.end(), AuxFunctor);
-            hour_angle += delta_hour_angle;
-        }
+    {
+        vec3d sun_vector = m_environment.location().SolarVector(hour_angle, declination);
+        double dni = weight * m_environment.atmosphere().DniFromSz(sun_vector.z);
+        ProcessHeliostatFunctor process_heliostat(sun_vector, sun_subtended_angle, ideal_efficiency_type, dni);
+        
+        direct_insolation += dni;
+        std::for_each(std::execution::par_unseq, m_heliostat.begin(), m_heliostat.end(), process_heliostat);
+        hour_angle += delta_hour_angle;
+    }
 }
