@@ -19,7 +19,6 @@ set(Headers
     ./include/atmosphere.h
     ./include/auxfunction.h
     ./include/boundaries.h 
-    ./include/dniashrae.h 
     ./include/environment.h 
     ./include/export.h 
     ./include/gcf.h 
@@ -36,7 +35,6 @@ set(Headers
 set(Sources 
     atmosphere.cpp 
     auxfunction.cpp 
-    dniashrae.cpp
     environment.cpp 
     gcf.cpp 
     heliostat.cpp

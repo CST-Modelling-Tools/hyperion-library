@@ -5,7 +5,6 @@
 #include "location.h"
 #include "boundaries.h"
 #include "environment.h"
-#include "dniashrae.h"
 #include "auxfunction.h"
 
 TEST(AtmosphereTest, DefaultConstructor)
@@ -438,92 +437,6 @@ double (&m_function)(double);
 };
 
 
-TEST(DniASHRAETest, ConstructorANDAssesors)
-{
-    double latitude = 20.3 * hypl::mathconstants::degree; 
-    hypl::Location location(latitude);
-
-    double io = 1121.2;
-    double beta = 0.158;
-    hypl::Atmosphere::TransmittanceModel transmittance_model = hypl::Atmosphere::TransmittanceModel::VB;
-    hypl::Atmosphere atmosphere(io, beta, transmittance_model);
-
-    int delta_days = 13;
-    hypl::Environment environment(location, atmosphere);
-
-    double x = 0.3;
-    double declination = 23.45 * (2.0 * x - 1.0) * hypl::mathconstants::degree;
-    hypl::DniASHRAE dniASHRAE(declination, environment);
-
-    double computed_declination = dniASHRAE.declination();
-    ASSERT_DOUBLE_EQ(computed_declination, declination);
-
-    const hypl::Environment& computed_environment = dniASHRAE.environment();
-    const hypl::Location& computed_location = computed_environment.location();
-    const hypl::Atmosphere& computed_atmosphere = computed_environment.atmosphere();
-
-    double computed_latitude = computed_location.latitude();
-    double computed_io = computed_atmosphere.io();
-    double computed_beta = computed_atmosphere.beta();
-
-    ASSERT_DOUBLE_EQ(computed_latitude, latitude);
-    ASSERT_DOUBLE_EQ(computed_io, io);    
-    ASSERT_DOUBLE_EQ(computed_beta, beta);
-}
-
-TEST(DniASHRAETest, operatorFunction)
-{
-    double latitude = 18.23 * hypl::mathconstants::degree; 
-    hypl::Location location(latitude);
-
-    double io = 1000.93;
-    double beta = 0.106;
-    hypl::Atmosphere::TransmittanceModel transmittance_model = hypl::Atmosphere::TransmittanceModel::LH;
-    hypl::Atmosphere atmosphere(io, beta, transmittance_model);
-
-    hypl::Environment environment(location, atmosphere);
-
-    double x = 0.67;
-    double declination = 23.45 * (2.0 * x - 1.0) * hypl::mathconstants::degree;
-    hypl::DniASHRAE dniASHRAE(declination, environment);
-
-    double computed_declination = dniASHRAE.declination();
-    ASSERT_DOUBLE_EQ(computed_declination, declination);
-
-    const hypl::Environment& computed_environment = dniASHRAE.environment();
-    const hypl::Location& computed_location = computed_environment.location();
-    const hypl::Atmosphere& computed_atmosphere = computed_environment.atmosphere();
-
-    double computed_latitude = computed_location.latitude();
-    double computed_io = computed_atmosphere.io();
-    double computed_beta = computed_atmosphere.beta();
-
-    ASSERT_DOUBLE_EQ(computed_latitude, latitude);
-    ASSERT_DOUBLE_EQ(computed_io, io);    
-    ASSERT_DOUBLE_EQ(computed_beta, beta);
-
-
-    double hour_angle_limit = location.HourAngleLimit(declination);
-    double solar_time_start = -hour_angle_limit/hypl::mathconstants::earth_rotational_speed; // start time in seconds
-    double solar_time_finish = - solar_time_start; // solar time in seconds, zero at solar noon, negative before and positive after.
-    double delta_solar_time = 78.5; // seconds
-    double solar_time = solar_time_start;
-
-    while( solar_time < solar_time_finish)
-    {
-        double hour_angle = solar_time * hypl::mathconstants::earth_rotational_speed;
-        double sz = sin(declination) * sin(latitude) + cos(declination) * cos(latitude) * cos(hour_angle);
-        
-        double expected_dni;
-        if(sz>0.00001) expected_dni = io * exp(-beta/sz);
-        else expected_dni = 0.0;
-
-        double computed_dni = dniASHRAE(solar_time);
-
-        ASSERT_DOUBLE_EQ(computed_dni, expected_dni);
-        solar_time += delta_solar_time;
-    }
-}
 
 
 TEST(AuxfunctionTest, SolarDeclinationByDayNumber)
