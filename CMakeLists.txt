@@ -24,6 +24,7 @@ set(Headers
     ./include/export.h 
     ./include/gcf.h 
     ./include/heliostat.h 
+    ./include/heliostatinstantaneousefficiency.h
     ./include/idealefficiencymap.h 
     ./include/location.h 
     ./include/mathconstants.h 
@@ -38,7 +39,8 @@ set(Sources
     dniashrae.cpp
     environment.cpp 
     gcf.cpp 
-    heliostat.cpp 
+    heliostat.cpp
+    heliostatinstantaneousefficiency.cpp
     idealefficiencymap.cpp     
     location.cpp
     vec2d.cpp 

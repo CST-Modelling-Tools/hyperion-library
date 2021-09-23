@@ -39,3 +39,4 @@ double hypl::auxfunction:: Subtended_angle(double ratio_distance)
 {
     return ( gcf::TwoPi * (1.0 - sqrt(1.0 - ratio_distance*ratio_distance)));
 }
+

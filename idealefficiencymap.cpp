@@ -4,6 +4,7 @@
 #include <execution>
 
 #include "auxfunction.h"
+#include "heliostatinstantaneousefficiency.h"
 #include "idealefficiencymap.h"
 
 hypl::IdealEfficiencyMap::IdealEfficiencyMap(Environment environment, Boundaries boundaries, 
@@ -70,11 +71,10 @@ void hypl::IdealEfficiencyMap::EvaluateAnnualEfficiencies(hypl::Heliostat::Ideal
             double hour_angle = t * mathconstants::earth_rotational_speed;
             vec3d sun_vector = m_environment.location().SolarVector(hour_angle, declination);
             double dni = m_environment.atmosphere().DniFromSz(sun_vector.z);
+            HeliostatInstantaneousEfficiency AuxFunctor(sun_vector, sun_subtended_angle, ideal_efficiency_type, dni);
+            
             direct_insolation += dni;
-            for (int heliostat_id = 0; heliostat_id < m_heliostat.size(); heliostat_id++)
-            {
-                 m_heliostat[heliostat_id].m_annual_ideal_efficiency += m_heliostat[heliostat_id].Track(sun_vector, sun_subtended_angle, ideal_efficiency_type).ideal_efficiency * dni;
-            }
+            std::for_each(std::execution::par_unseq, m_heliostat.begin(), m_heliostat.end(), AuxFunctor);
             t += delta_t;
         }
         day_number++;
