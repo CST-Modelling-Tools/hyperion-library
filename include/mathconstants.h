@@ -12,6 +12,7 @@ namespace hypl
         constexpr double degree = pi/180.0;
         constexpr double earth_rotational_speed = (15.0*degree)/3600.0; // Radians per second
         constexpr double astronomical_unit = 149597870.7; //in kilometers
+        constexpr double sun_radius = 695700.0; //kilometers
     } // namespace mathconstants
 } 
 #endif // MATHCONSTANTS_H

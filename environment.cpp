@@ -1,6 +1,5 @@
 #include "environment.h"
 #include "auxfunction.h"
-#include "gcf.h"
 
 hypl::Environment::Environment()
 {
@@ -24,25 +23,9 @@ void hypl::Environment::update_environment()
     int ndays = 365;  
     m_sun_subtended_angle.reserve(ndays);
     m_declination.reserve(ndays);
-    for (int i=1; i<=ndays; i++)
+    for (int day_number=1; day_number<=ndays; day_number++)
     {
-        m_sun_subtended_angle.emplace_back(auxfunction::ReceiverSubtendedAngle(gcf::Sun_radius / auxfunction::DistanceSunEarth(i)));
-        m_declination.emplace_back(auxfunction::SolarDeclinationByDayNumber(i));
+        m_sun_subtended_angle.emplace_back(auxfunction::ReceiverSubtendedAngle(mathconstants::sun_radius / auxfunction::DistanceSunEarth(day_number)));
+        m_declination.emplace_back(auxfunction::SolarDeclinationByDayNumber(day_number));
     }
-}
-
-void hypl::Environment::set_location(Location location) 
-{
-    m_location = location; 
-}
-
-void hypl::Environment::set_atmosphere(Atmosphere atmosphere) 
-{ 
-    m_atmosphere = atmosphere; 
-}
-
-void hypl::Environment::set_location_and_atmosphere(Location location, Atmosphere atmosphere)
-{
-    m_location = location;
-    m_atmosphere = atmosphere;
 }
