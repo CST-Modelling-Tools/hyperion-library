@@ -2,7 +2,6 @@
 #include "auxfunction.h"
 #include "mathconstants.h"
 #include "dniashrae.h"
-#include "deintegrator.h"
 #include "gcf.h"
 
 int hypl::auxfunction::DayNumber(int day_index)
@@ -26,44 +25,6 @@ double hypl::auxfunction::SolarDeclinationByIndex(int day_index)
     return SolarDeclinationByDayNumber(DayNumber(day_index));
 }
 
-
-double hypl::auxfunction::DniDailyEnergy(double declination, const Environment& environment)
-{
-    double wo = environment.location().HourAngleLimit(declination);
-    double t_start = -wo/mathconstants::earth_rotational_speed;
-    double t_end = 0.0; //Considering a symmetric DNI curve around true solar noon.
-
-    DniASHRAE dni(declination, environment);
-    return 2.0 * DEIntegrator<DniASHRAE>::Integrate(dni, t_start, t_end, 1e-12);
-}
-
-/*
-double hypl::auxfunction::DniYearlyEnergy(const Environment& environment)
-{
-    double sum = 0.0;
-    int day_number = 1;
-    while (day_number < 366)
-    {
-        sum += DniDailyEnergy(SolarDeclinationByDayNumber(day_number), environment);
-        day_number++;
-    }
-    return sum;
-}
-*/
-
-double hypl::auxfunction::DniYearlyEnergy(const Environment& environment)
-{
-    double sum = 0.0;
-    int day_number = 174;
-    while (day_number < 356)
-    {
-        sum += DniDailyEnergy(SolarDeclinationByDayNumber(day_number), environment);
-        day_number++;
-    }
-    return 2.0 * sum  + 0.5 * DniDailyEnergy(SolarDeclinationByDayNumber(173), environment);
-}
-
-
 double hypl::auxfunction::Distance_earth_sun(int day_number)
 {
     double average_distance = 149597870.0; //in kilometers
@@ -73,7 +34,6 @@ double hypl::auxfunction::Distance_earth_sun(int day_number)
 
     return sqrt( average_distance * (average_distance / aux) );
 }
-
 
 double hypl::auxfunction:: Subtended_angle(double ratio_distance)
 {

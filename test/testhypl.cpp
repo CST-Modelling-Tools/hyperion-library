@@ -5,7 +5,6 @@
 #include "location.h"
 #include "boundaries.h"
 #include "environment.h"
-#include "deintegrator.h"
 #include "dniashrae.h"
 #include "auxfunction.h"
 
@@ -15,20 +14,20 @@ TEST(AtmosphereTest, DefaultConstructor)
 
     EXPECT_DOUBLE_EQ(atmosphere.io(), 1110.0);
     EXPECT_DOUBLE_EQ(atmosphere.beta(), 0.11);
-    EXPECT_EQ(atmosphere.attenuation_model(), hypl::Atmosphere::AttenuationModel::VB);
+    EXPECT_EQ(atmosphere.transmittance_model(), hypl::Atmosphere::TransmittanceModel::VB);
 }
 
 TEST(AtmosphereTest, Constructor)
 {
     double io = 1120.0;
     double beta = 0.10;
-    hypl::Atmosphere::AttenuationModel attenuation_model = hypl::Atmosphere::AttenuationModel::LH;
+    hypl::Atmosphere::TransmittanceModel transmittance_model = hypl::Atmosphere::TransmittanceModel::LH;
 
-    hypl::Atmosphere atmosphere(io, beta, attenuation_model);
+    hypl::Atmosphere atmosphere(io, beta, transmittance_model);
 
     EXPECT_DOUBLE_EQ(atmosphere.io(), io);
     EXPECT_DOUBLE_EQ(atmosphere.beta(), beta);
-    EXPECT_EQ(atmosphere.attenuation_model(), attenuation_model);
+    EXPECT_EQ(atmosphere.transmittance_model(), transmittance_model);
 }
 
 TEST(AtmosphereTest, MutatorsAndAccessors)
@@ -36,83 +35,83 @@ TEST(AtmosphereTest, MutatorsAndAccessors)
     hypl::Atmosphere atmosphere;
     double io = 1110.0;
     double beta = 0.11;
-    hypl::Atmosphere::AttenuationModel attenuation_model = hypl::Atmosphere::AttenuationModel::VB;
+    hypl::Atmosphere::TransmittanceModel transmittance_model = hypl::Atmosphere::TransmittanceModel::VB;
 
     EXPECT_DOUBLE_EQ(atmosphere.io(), io);
     EXPECT_DOUBLE_EQ(atmosphere.beta(), beta);
-    EXPECT_EQ(atmosphere.attenuation_model(), attenuation_model);
+    EXPECT_EQ(atmosphere.transmittance_model(), transmittance_model);
 
     io = 2120.0;
     beta = 0.20;
-    attenuation_model = hypl::Atmosphere::AttenuationModel::SW;
+    transmittance_model = hypl::Atmosphere::TransmittanceModel::SW;
 
     atmosphere.set_io(io);
     atmosphere.set_beta(beta);
-    atmosphere.set_attenuation_model(attenuation_model);
+    atmosphere.set_transmittance_model(transmittance_model);
 
     EXPECT_DOUBLE_EQ(atmosphere.io(), io);
     EXPECT_DOUBLE_EQ(atmosphere.beta(), beta);
-    EXPECT_EQ(atmosphere.attenuation_model(), attenuation_model);
+    EXPECT_EQ(atmosphere.transmittance_model(), transmittance_model);
 }
 
-TEST(AtmosphereTest, AttenuationVB)
+TEST(AtmosphereTest, TransmittanceVB)
 {
-    hypl::Atmosphere atmosphere(1100.0, 0.12, hypl::Atmosphere::AttenuationModel::VB);
+    hypl::Atmosphere atmosphere(1100.0, 0.12, hypl::Atmosphere::TransmittanceModel::VB);
 
-    ASSERT_EQ(atmosphere.attenuation_model(), hypl::Atmosphere::AttenuationModel::VB);
+    ASSERT_EQ(atmosphere.transmittance_model(), hypl::Atmosphere::TransmittanceModel::VB);
 
     double minimum_slant_range = 50;
     double delta_distance = 53.2;
-    double expected_attenuation;
+    double expected_transmittance;
 
     double slant_range = minimum_slant_range;
     while( slant_range < 1500.0)
     {
-        expected_attenuation = 0.99326 + slant_range * (-0.0001046 + (1.7000000000000003e-8 - 2.845e-12 * slant_range) * slant_range);
-        EXPECT_DOUBLE_EQ(atmosphere.Attenuation(slant_range), expected_attenuation );
+        expected_transmittance = 0.99326 + slant_range * (-0.0001046 + (1.7000000000000003e-8 - 2.845e-12 * slant_range) * slant_range);
+        EXPECT_DOUBLE_EQ(atmosphere.Transmittance(slant_range), expected_transmittance );
         slant_range += delta_distance;
     }
 }
 
-TEST(AtmosphereTest, AttenuationSW)
+TEST(AtmosphereTest, TransmittanceSW)
 {
     double beta = 0.115;
-    hypl::Atmosphere atmosphere(1150.0, beta, hypl::Atmosphere::AttenuationModel::SW);
+    hypl::Atmosphere atmosphere(1150.0, beta, hypl::Atmosphere::TransmittanceModel::SW);
 
     ASSERT_FLOAT_EQ(atmosphere.beta(), beta);
-    ASSERT_EQ(atmosphere.attenuation_model(), hypl::Atmosphere::AttenuationModel::SW);
+    ASSERT_EQ(atmosphere.transmittance_model(), hypl::Atmosphere::TransmittanceModel::SW);
 
     double minimum_slant_range = 50;
     double delta_distance = 53.2;
-    double expected_attenuation;
+    double expected_transmittance;
 
     double slant_range = minimum_slant_range;
     while( slant_range < 1500.0)
     {
-        expected_attenuation = exp(-(0.000010696 + 0.0009196 * beta) * slant_range);
-        EXPECT_DOUBLE_EQ(atmosphere.Attenuation(slant_range), expected_attenuation );
+        expected_transmittance = exp(-(0.000010696 + 0.0009196 * beta) * slant_range);
+        EXPECT_DOUBLE_EQ(atmosphere.Transmittance(slant_range), expected_transmittance );
         slant_range += delta_distance;
     }
 }
 
-TEST(AtmosphereTest, AttenuationLH)
+TEST(AtmosphereTest, TransmittanceLH)
 {
     double beta = 0.105;
-    hypl::Atmosphere atmosphere(1130.0, beta, hypl::Atmosphere::AttenuationModel::LH);
+    hypl::Atmosphere atmosphere(1130.0, beta, hypl::Atmosphere::TransmittanceModel::LH);
 
     ASSERT_FLOAT_EQ(atmosphere.beta(), beta);
-    ASSERT_EQ(atmosphere.attenuation_model(), hypl::Atmosphere::AttenuationModel::LH);
+    ASSERT_EQ(atmosphere.transmittance_model(), hypl::Atmosphere::TransmittanceModel::LH);
 
     double minimum_slant_range = 50;
     double delta_distance = 53.2;
-    double expected_attenuation;
+    double expected_transmittance;
 
     double slant_range = minimum_slant_range;
     while( slant_range < 1500.0)
     {
-        if(slant_range <= 1000.0) expected_attenuation = 0.99321 + (-0.0001176 + 1.9699999999999998e-8 * slant_range) * slant_range;
-        else expected_attenuation = exp(-0.0001106 * slant_range);
-        EXPECT_DOUBLE_EQ(atmosphere.Attenuation(slant_range), expected_attenuation );
+        if(slant_range <= 1000.0) expected_transmittance = 0.99321 + (-0.0001176 + 1.9699999999999998e-8 * slant_range) * slant_range;
+        else expected_transmittance = exp(-0.0001106 * slant_range);
+        EXPECT_DOUBLE_EQ(atmosphere.Transmittance(slant_range), expected_transmittance );
         slant_range += delta_distance;
     }
 }
@@ -121,11 +120,11 @@ TEST(AtmosphereTest, DniFromSz)
 {
     double io = 1130.0;
     double beta = 0.105;
-    hypl::Atmosphere atmosphere(io, beta, hypl::Atmosphere::AttenuationModel::LH);
+    hypl::Atmosphere atmosphere(io, beta, hypl::Atmosphere::TransmittanceModel::LH);
 
     ASSERT_FLOAT_EQ(atmosphere.io(), io);
     ASSERT_FLOAT_EQ(atmosphere.beta(), beta);
-    ASSERT_EQ(atmosphere.attenuation_model(), hypl::Atmosphere::AttenuationModel::LH);
+    ASSERT_EQ(atmosphere.transmittance_model(), hypl::Atmosphere::TransmittanceModel::LH);
 
     double minimum_elevation = 0.0 * hypl::mathconstants::degree;
     double delta_elevation = 3.4 * hypl::mathconstants::degree;
@@ -306,28 +305,23 @@ TEST(EnvironmentTest, DefaultConstructorAndAccessors)
 {
     hypl::Environment environment;
 
-    double computed_dni_annual_energy = environment.dni_annual_energy();
-
     const hypl::Location& location = environment.location();
     const hypl::Atmosphere& atmosphere = environment.atmosphere();
     
     double computed_latitude = location.latitude();
     double computed_io = atmosphere.io();
     double computed_beta = atmosphere.beta();
-    hypl::Atmosphere::AttenuationModel computed_attenuation_model = atmosphere.attenuation_model();
+    hypl::Atmosphere::TransmittanceModel computed_transmittance_model = atmosphere.transmittance_model();
 
     double expected_latitude = 37.2 * hypl::mathconstants::degree;
     double expected_io = 1110.0;
     double expected_beta = 0.11;
-    hypl::Atmosphere::AttenuationModel expected_attenuation_model = hypl::Atmosphere::AttenuationModel::VB;
-    int expected_delta_days = 13;
-    double expected_dni_annual_energy = hypl::auxfunction::DniYearlyEnergy(environment);
+    hypl::Atmosphere::TransmittanceModel expected_transmittance_model = hypl::Atmosphere::TransmittanceModel::VB;
 
     EXPECT_DOUBLE_EQ(computed_latitude, expected_latitude);
     EXPECT_DOUBLE_EQ(computed_io, expected_io);
     EXPECT_DOUBLE_EQ(computed_beta, expected_beta);
-    EXPECT_EQ(computed_attenuation_model, expected_attenuation_model);
-    EXPECT_DOUBLE_EQ(computed_dni_annual_energy, expected_dni_annual_energy);    
+    EXPECT_EQ(computed_transmittance_model, expected_transmittance_model);
 }
 
 TEST(EnvironmentTest, Constructor)
@@ -337,14 +331,11 @@ TEST(EnvironmentTest, Constructor)
 
     double expected_io = 1030.4;
     double expected_beta = 0.1093;
-    hypl::Atmosphere::AttenuationModel expected_attenuation_model = hypl::Atmosphere::AttenuationModel::SW;
-    hypl::Atmosphere expected_atmosphere(expected_io, expected_beta, expected_attenuation_model);
+    hypl::Atmosphere::TransmittanceModel expected_transmittance_model = hypl::Atmosphere::TransmittanceModel::SW;
+    hypl::Atmosphere expected_atmosphere(expected_io, expected_beta, expected_transmittance_model);
 
     hypl::Environment environment(expected_location, expected_atmosphere);
 
-    double expected_dni_annual_energy = hypl::auxfunction::DniYearlyEnergy(environment);
-
-    double computed_dni_annual_energy = environment.dni_annual_energy();
 
     const hypl::Location& computed_location = environment.location();
     const hypl::Atmosphere& computed_atmosphere = environment.atmosphere();
@@ -352,13 +343,12 @@ TEST(EnvironmentTest, Constructor)
     double computed_latitude = computed_location.latitude();
     double computed_io = computed_atmosphere.io();
     double computed_beta = computed_atmosphere.beta();
-    hypl::Atmosphere::AttenuationModel computed_attenuation_model = computed_atmosphere.attenuation_model();
+    hypl::Atmosphere::TransmittanceModel computed_transmittance_model = computed_atmosphere.transmittance_model();
 
     EXPECT_DOUBLE_EQ(computed_latitude, expected_latitude);
     EXPECT_DOUBLE_EQ(computed_io, expected_io);
     EXPECT_DOUBLE_EQ(computed_beta, expected_beta);
-    EXPECT_EQ(computed_attenuation_model, expected_attenuation_model);
-    EXPECT_DOUBLE_EQ(computed_dni_annual_energy, expected_dni_annual_energy);
+    EXPECT_EQ(computed_transmittance_model, expected_transmittance_model);
 }
 
 TEST(EnvironmentTest, Mutators)
@@ -369,15 +359,11 @@ TEST(EnvironmentTest, Mutators)
 
     double initial_io = 1123.6;
     double initial_beta = 0.1902;
-    hypl::Atmosphere::AttenuationModel initial_attenuation_model = hypl::Atmosphere::AttenuationModel::LH;
-    hypl::Atmosphere initial_atmosphere(initial_io, initial_beta, initial_attenuation_model);
+    hypl::Atmosphere::TransmittanceModel initial_transmittance_model = hypl::Atmosphere::TransmittanceModel::LH;
+    hypl::Atmosphere initial_atmosphere(initial_io, initial_beta, initial_transmittance_model);
 
     hypl::Environment environment(initial_location, initial_atmosphere);
 
-    // Verifying that the content of the environment is consistent with the initial values
-    double initial_dni_annual_energy = hypl::auxfunction::DniYearlyEnergy(environment);
-
-    double computed_dni_annual_energy = environment.dni_annual_energy();
 
     const hypl::Location& computed_location = environment.location();
     const hypl::Atmosphere& computed_atmosphere = environment.atmosphere();
@@ -385,13 +371,12 @@ TEST(EnvironmentTest, Mutators)
     double computed_latitude = computed_location.latitude();
     double computed_io = computed_atmosphere.io();
     double computed_beta = computed_atmosphere.beta();
-    hypl::Atmosphere::AttenuationModel computed_attenuation_model = computed_atmosphere.attenuation_model();
+    hypl::Atmosphere::TransmittanceModel computed_transmittance_model = computed_atmosphere.transmittance_model();
 
     EXPECT_DOUBLE_EQ(computed_latitude, initial_latitude);
     EXPECT_DOUBLE_EQ(computed_io, initial_io);
     EXPECT_DOUBLE_EQ(computed_beta, initial_beta);
-    EXPECT_EQ(computed_attenuation_model, initial_attenuation_model);
-    EXPECT_DOUBLE_EQ(computed_dni_annual_energy, initial_dni_annual_energy);
+    EXPECT_EQ(computed_transmittance_model, initial_transmittance_model);
 /*
         void set_location(Location location);
         void set_atmosphere(Atmosphere atmosphere);
@@ -406,15 +391,10 @@ TEST(EnvironmentTest, Mutators)
 
     double new_io = 999.466;
     double new_beta = 0.122;
-    hypl::Atmosphere::AttenuationModel new_attenuation_model = hypl::Atmosphere::AttenuationModel::VB;
-    hypl::Atmosphere new_atmosphere(new_io, new_beta, new_attenuation_model);
+    hypl::Atmosphere::TransmittanceModel new_transmittance_model = hypl::Atmosphere::TransmittanceModel::VB;
+    hypl::Atmosphere new_atmosphere(new_io, new_beta, new_transmittance_model);
     environment.set_atmosphere(new_atmosphere);
 
-
-    // Verifying that the content of the environment is consistent with the new values    
-    double new_dni_annual_energy = hypl::auxfunction::DniYearlyEnergy(environment);
-
-    double new_computed_dni_annual_energy = environment.dni_annual_energy();
 
     const hypl::Location& new_computed_location = environment.location();
     const hypl::Atmosphere& new_computed_atmosphere = environment.atmosphere();
@@ -422,21 +402,16 @@ TEST(EnvironmentTest, Mutators)
     double new_computed_latitude = new_computed_location.latitude();
     double new_computed_io = new_computed_atmosphere.io();
     double new_computed_beta = new_computed_atmosphere.beta();
-    hypl::Atmosphere::AttenuationModel new_computed_attenuation_model = new_computed_atmosphere.attenuation_model();
+    hypl::Atmosphere::TransmittanceModel new_computed_transmittance_model = new_computed_atmosphere.transmittance_model();
 
     EXPECT_DOUBLE_EQ(new_computed_latitude, new_latitude);
     EXPECT_DOUBLE_EQ(new_computed_io, new_io);
     EXPECT_DOUBLE_EQ(new_computed_beta, new_beta);
-    EXPECT_EQ(new_computed_attenuation_model, new_attenuation_model);
-    EXPECT_DOUBLE_EQ(new_computed_dni_annual_energy, new_dni_annual_energy);
+    EXPECT_EQ(new_computed_transmittance_model, new_transmittance_model);
 
     //Testing the last mutator
     environment.set_location_and_atmosphere(initial_location, initial_atmosphere);
 
-    // Verifying that the content of the environment is consistent with the new values    
-    double new_dni_annual_energy2 = hypl::auxfunction::DniYearlyEnergy(environment);
-
-    double new_computed_dni_annual_energy2 = environment.dni_annual_energy();
 
     const hypl::Location& new_computed_location2 = environment.location();
     const hypl::Atmosphere& new_computed_atmosphere2 = environment.atmosphere();
@@ -444,13 +419,12 @@ TEST(EnvironmentTest, Mutators)
     double new_computed_latitude2 = new_computed_location2.latitude();
     double new_computed_io2 = new_computed_atmosphere2.io();
     double new_computed_beta2 = new_computed_atmosphere2.beta();
-    hypl::Atmosphere::AttenuationModel new_computed_attenuation_model2 = new_computed_atmosphere2.attenuation_model();
+    hypl::Atmosphere::TransmittanceModel new_computed_transmittance_model2 = new_computed_atmosphere2.transmittance_model();
 
     EXPECT_DOUBLE_EQ(new_computed_latitude2, initial_latitude);
     EXPECT_DOUBLE_EQ(new_computed_io2, initial_io);
     EXPECT_DOUBLE_EQ(new_computed_beta2, initial_beta);
-    EXPECT_EQ(new_computed_attenuation_model2, initial_attenuation_model);
-    EXPECT_DOUBLE_EQ(new_computed_dni_annual_energy2, new_dni_annual_energy2);
+    EXPECT_EQ(new_computed_transmittance_model2, initial_transmittance_model);
 }
 
 class SimpleFunctor
@@ -463,83 +437,6 @@ private:
 double (&m_function)(double);
 };
 
-TEST(DEIntegratorTest, Integrate)
-{
-    // Integration of cosine
-    SimpleFunctor CosineFunctor(cos);
-
-    double a = 0.0;
-    double b = hypl::mathconstants::pi;
-
-    double computed_value = hypl::DEIntegrator<SimpleFunctor>::Integrate(CosineFunctor, a, b, 1e-6);
-    double expected_value = 0.0;
-    EXPECT_NEAR(computed_value, expected_value, 1e-13);
-
-    b = hypl::mathconstants::pi/3.0;  
-    computed_value = hypl::DEIntegrator<SimpleFunctor>::Integrate(CosineFunctor, a, b, 1e-6);
-    expected_value = 0.8660254037844386;
-    EXPECT_NEAR(computed_value, expected_value, 1e-13);
-
-    b = hypl::mathconstants::pi/4.0;
-    computed_value = hypl::DEIntegrator<SimpleFunctor>::Integrate(CosineFunctor, a, b, 1e-6);
-    expected_value = 0.7071067811865476;
-    EXPECT_NEAR(computed_value, expected_value, 1e-13);
-
-    b = hypl::mathconstants::pi/5.0;
-    computed_value = hypl::DEIntegrator<SimpleFunctor>::Integrate(CosineFunctor, a, b, 1e-6);
-    expected_value = 0.5877852522924731;
-    EXPECT_NEAR(computed_value, expected_value, 1e-13);
-
-    // Integration of tangent
-    SimpleFunctor TanFunctor(tan);
-    
-    a = 0.0;
-    b = hypl::mathconstants::pi/2.2;
-
-    computed_value = hypl::DEIntegrator<SimpleFunctor>::Integrate(TanFunctor, a, b, 1e-6);
-    expected_value = 1.9497135047385736;
-    EXPECT_NEAR(computed_value, expected_value, 1e-13);
-
-    b = hypl::mathconstants::pi/3.0;  
-    computed_value = hypl::DEIntegrator<SimpleFunctor>::Integrate(TanFunctor, a, b, 1e-6);
-    expected_value = 0.6931471805599271;
-    EXPECT_NEAR(computed_value, expected_value, 1e-13);
-
-    b = hypl::mathconstants::pi/4.0;
-    computed_value = hypl::DEIntegrator<SimpleFunctor>::Integrate(TanFunctor, a, b, 1e-6);
-    expected_value = 0.34657359027996476;
-    EXPECT_NEAR(computed_value, expected_value, 1e-13);
-
-    b = hypl::mathconstants::pi/5.0;
-    computed_value = hypl::DEIntegrator<SimpleFunctor>::Integrate(TanFunctor, a, b, 1e-6);
-    expected_value = 0.2119353555003373;
-    EXPECT_NEAR(computed_value, expected_value, 1e-13);
-
-    // Integration of exponential
-    SimpleFunctor ExpFunctor(exp);
-    
-    a = -10.0;
-    b = hypl::mathconstants::pi/2.0;
-
-    computed_value = hypl::DEIntegrator<SimpleFunctor>::Integrate(ExpFunctor, a, b, 1e-6);
-    expected_value = 4.810431981035513;
-    EXPECT_NEAR(computed_value, expected_value, 1e-12);
-
-    b = hypl::mathconstants::pi/3.0;  
-    computed_value = hypl::DEIntegrator<SimpleFunctor>::Integrate(ExpFunctor, a, b, 1e-6);
-    expected_value = 2.849608508296569;
-    EXPECT_NEAR(computed_value, expected_value, 1e-12);
-
-    b = hypl::mathconstants::pi/4.0;
-    computed_value = hypl::DEIntegrator<SimpleFunctor>::Integrate(ExpFunctor, a, b, 1e-6);
-    expected_value = 2.193234650808236;
-    EXPECT_NEAR(computed_value, expected_value, 1e-12);
-
-    b = hypl::mathconstants::pi/5.0;
-    computed_value = hypl::DEIntegrator<SimpleFunctor>::Integrate(ExpFunctor, a, b, 1e-6);
-    expected_value = 1.874410687655564;
-    EXPECT_NEAR(computed_value, expected_value, 1e-12);
-}
 
 TEST(DniASHRAETest, ConstructorANDAssesors)
 {
@@ -548,8 +445,8 @@ TEST(DniASHRAETest, ConstructorANDAssesors)
 
     double io = 1121.2;
     double beta = 0.158;
-    hypl::Atmosphere::AttenuationModel attenuation_model = hypl::Atmosphere::AttenuationModel::VB;
-    hypl::Atmosphere atmosphere(io, beta, attenuation_model);
+    hypl::Atmosphere::TransmittanceModel transmittance_model = hypl::Atmosphere::TransmittanceModel::VB;
+    hypl::Atmosphere atmosphere(io, beta, transmittance_model);
 
     int delta_days = 13;
     hypl::Environment environment(location, atmosphere);
@@ -581,8 +478,8 @@ TEST(DniASHRAETest, operatorFunction)
 
     double io = 1000.93;
     double beta = 0.106;
-    hypl::Atmosphere::AttenuationModel attenuation_model = hypl::Atmosphere::AttenuationModel::LH;
-    hypl::Atmosphere atmosphere(io, beta, attenuation_model);
+    hypl::Atmosphere::TransmittanceModel transmittance_model = hypl::Atmosphere::TransmittanceModel::LH;
+    hypl::Atmosphere atmosphere(io, beta, transmittance_model);
 
     hypl::Environment environment(location, atmosphere);
 

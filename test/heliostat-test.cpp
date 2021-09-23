@@ -24,8 +24,8 @@ TEST(Heliostat, ConstructorANDBasicAccessors)
 
     double expected_io {1005.26};
     double expected_beta {0.112};
-    auto expected_attenuation_model = hypl::Atmosphere::AttenuationModel::SW;
-    hypl::Atmosphere expected_atmosphere(expected_io, expected_beta, expected_attenuation_model);
+    auto expected_transmittance_model = hypl::Atmosphere::TransmittanceModel::SW;
+    hypl::Atmosphere expected_atmosphere(expected_io, expected_beta, expected_transmittance_model);
 
     hypl::Environment expected_environment(expected_location, expected_atmosphere);
 
@@ -49,7 +49,7 @@ TEST(Heliostat, ConstructorANDBasicAccessors)
     double computed_latitude = computed_location.latitude();
     double computed_io = computed_atmosphere.io();
     double computed_beta = computed_atmosphere.beta();
-    auto computed_attenuation_model = computed_atmosphere.attenuation_model();
+    auto computed_transmittance_model = computed_atmosphere.transmittance_model();
 
     auto computed_receivers = heliostat.receivers();
 
@@ -62,7 +62,7 @@ TEST(Heliostat, ConstructorANDBasicAccessors)
     EXPECT_DOUBLE_EQ(computed_latitude, expected_latitude);
     EXPECT_DOUBLE_EQ(computed_io, expected_io);
     EXPECT_DOUBLE_EQ(computed_beta, expected_beta);
-    EXPECT_DOUBLE_EQ(computed_attenuation_model, expected_attenuation_model);
+    EXPECT_DOUBLE_EQ(computed_transmittance_model, expected_transmittance_model);
 
     for( int i = 0; i < 3; i++)
     {
@@ -83,8 +83,8 @@ TEST(Heliostat, NoneBasicAccessors)
 
     double io {1017.29};
     double beta {0.114};
-    auto attenuation_model = hypl::Atmosphere::AttenuationModel::LH;
-    hypl::Atmosphere atmosphere(io, beta, attenuation_model);
+    auto transmittance_model = hypl::Atmosphere::TransmittanceModel::LH;
+    hypl::Atmosphere atmosphere(io, beta, transmittance_model);
 
     int delta_days = 3;
     hypl::Environment environment(location, atmosphere);

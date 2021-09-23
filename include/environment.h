@@ -20,7 +20,6 @@ namespace hypl
         //Accessors
         const Location& location() const { return m_location; }
         const Atmosphere& atmosphere() const { return m_atmosphere; }
-        double dni_annual_energy() const { return m_dni_annual_energy; }
         const std::vector<double>& sun_subtended_angle() const { return m_sun_subtended_angle; }
         const std::vector<double>& declination() const { return m_declination; }
 
@@ -34,7 +33,6 @@ namespace hypl
         //Private variables
         Location m_location;
         Atmosphere m_atmosphere;
-        double m_dni_annual_energy;
         std::vector<double> m_sun_subtended_angle;
         std::vector<double> m_declination;
     };

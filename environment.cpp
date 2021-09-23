@@ -16,7 +16,6 @@ m_atmosphere {atmosphere}
 
 void hypl::Environment::update_environment()
 {
-    m_dni_annual_energy = auxfunction::DniYearlyEnergy( (*this) );
 
     if( m_sun_subtended_angle.empty() == false ) m_declination.clear();
     if( m_declination.empty() == false ) m_declination.clear();
@@ -35,18 +34,15 @@ void hypl::Environment::update_environment()
 void hypl::Environment::set_location(Location location) 
 {
     m_location = location; 
-    m_dni_annual_energy = auxfunction::DniYearlyEnergy( (*this) ); 
 }
 
 void hypl::Environment::set_atmosphere(Atmosphere atmosphere) 
 { 
     m_atmosphere = atmosphere; 
-    m_dni_annual_energy = auxfunction::DniYearlyEnergy( (*this) );
 }
 
 void hypl::Environment::set_location_and_atmosphere(Location location, Atmosphere atmosphere)
 {
     m_location = location;
     m_atmosphere = atmosphere;
-    m_dni_annual_energy = auxfunction::DniYearlyEnergy( (*this) );
 }
