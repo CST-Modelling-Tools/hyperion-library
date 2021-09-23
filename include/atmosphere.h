@@ -22,8 +22,8 @@ namespace hypl
               m_transmittance_model {transmittance_model} {}
 
         //Accessors
-        double io() const { return m_io; }
-        double beta() const {return m_beta; }
+        double const& io() const { return m_io; }
+        double const& beta() const {return m_beta; }
         TransmittanceModel transmittance_model() const { return m_transmittance_model; }
 
         //Mutators

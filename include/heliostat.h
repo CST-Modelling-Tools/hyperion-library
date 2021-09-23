@@ -40,12 +40,12 @@ namespace hypl
         Heliostat(Environment& environment, std::vector<Receiver>& receivers, vec3d center);
 
         //Accessors
-        const Environment& environment() const { return m_environment; }
-        const std::vector<Receiver>& receivers() const { return m_receivers; }
-        const vec3d& center() const { return m_center; }
-        const std::vector<double>& transmittance() const { return m_transmittance; }
-        const std::vector<double>& slant_range() const { return m_slant_range; }
-        const std::vector<vec3d>& reflected_unit_vector() const { return m_reflected_unit_vector; }
+        Environment const& environment() const { return m_environment; }
+        std::vector<Receiver> const& receivers() const { return m_receivers; }
+        vec3d const& center() const { return m_center; }
+        std::vector<double> const& transmittance() const { return m_transmittance; }
+        std::vector<double> const& slant_range() const { return m_slant_range; }
+        std::vector<vec3d> const& reflected_unit_vector() const { return m_reflected_unit_vector; }
 
         //Mutators
         void update();

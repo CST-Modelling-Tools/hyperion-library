@@ -15,7 +15,7 @@ namespace hypl
         Location(double latitude) : m_latitude {latitude} {} //Latitude should be entered in radians
 
         //Accessors
-        double latitude() const { return m_latitude; }
+        double const& latitude() const { return m_latitude; }
 
         //Mutators
         void set_latitude_degree(double latitude_degree) { m_latitude = latitude_degree * mathconstants::degree; }

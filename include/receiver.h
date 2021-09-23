@@ -14,9 +14,9 @@ namespace hypl
         Receiver(vec3d aiming_point, double radius) : m_aiming_point{aiming_point}, m_power{0.0}, m_radius{abs(radius)} {}
 
         //Accessors
-        vec3d aiming_point() const { return m_aiming_point; }
-        double power() const { return m_power; }
-        double radius() const { return m_radius; }
+        vec3d const& aiming_point() const { return m_aiming_point; }
+        double const& power() const { return m_power; }
+        double const& radius() const { return m_radius; }
 
         //Mutators
         void set_aiming_point(vec3d aiming_point) {m_aiming_point = aiming_point;}

@@ -18,10 +18,10 @@ namespace hypl
 
 
         //Accessors
-        const Location& location() const { return m_location; }
-        const Atmosphere& atmosphere() const { return m_atmosphere; }
-        const std::vector<double>& sun_subtended_angle() const { return m_sun_subtended_angle; }
-        const std::vector<double>& declination() const { return m_declination; }
+        Location const& location() const { return m_location; }
+        Atmosphere const& atmosphere() const { return m_atmosphere; }
+        std::vector<double> const& sun_subtended_angle() const { return m_sun_subtended_angle; }
+        std::vector<double> const& declination() const { return m_declination; }
 
         //Mutators
         void set_location(Location location);

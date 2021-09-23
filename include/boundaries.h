@@ -21,10 +21,10 @@ namespace hypl
               m_ymax {ymax} {}
 
         //Accessors
-        const double& xmin() const {return m_xmin;}
-        const double& xmax() const {return m_xmax;}
-        const double& ymin() const {return m_ymin;}
-        const double& ymax() const {return m_ymax;}
+        double const& xmin() const {return m_xmin;}
+        double const& xmax() const {return m_xmax;}
+        double const& ymin() const {return m_ymin;}
+        double const& ymax() const {return m_ymax;}
 
         //Mutators
         void set_xmin(double xmin) {m_xmin = xmin;}

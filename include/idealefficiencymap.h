@@ -29,12 +29,12 @@ namespace hypl
         IdealEfficiencyMap(Environment environment, Boundaries boundaries, std::vector<Receiver>& receivers, int nrows, int ncolumns);
 
         //Accessors
-        const Environment& environment() const {return m_environment;}
-        const Boundaries& boundaries() const {return m_boundaries;}
-        const std::vector<Receiver>& receivers() const {return m_receiver;}
-        const int& nrows() const {return m_nrows;}
-        const int& ncolumns() const {return m_ncolumns;}
-        std::vector<Heliostat>& heliostats() {return m_heliostat;}
+        Environment const& environment() const {return m_environment;}
+        Boundaries const& boundaries() const {return m_boundaries;}
+        std::vector<Receiver> const& receivers() const {return m_receiver;}
+        int const& nrows() const {return m_nrows;}
+        int const& ncolumns() const {return m_ncolumns;}
+        std::vector<Heliostat> const& heliostats() {return m_heliostat;}
 
         //Mutators
         void update();
