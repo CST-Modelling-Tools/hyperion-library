@@ -1,14 +1,11 @@
 #ifndef HELIOSTAT_H
 #define HELIOSTAT_H
 
-#include "export.h"
-
 #include <vector>
 
-//Hyperion library includes
+#include "export.h"
 #include "environment.h"
 #include "receiver.h"
-
 #include "vec3d.h"
 
 struct DLL_API std::_Container_base12;
@@ -48,8 +45,8 @@ namespace hypl
         std::vector<vec3d> const& reflected_unit_vector() const { return m_reflected_unit_vector; }
 
         //Mutators
-        void update();
         void set_center(vec3d center) { m_center = center; update(); }
+        void update();
 
         //Public functions
         TrackingInfo Track(vec3d& sun_vector, double sun_subtended_angle, IdealEfficiencyType ideal_efficiency_type) const;

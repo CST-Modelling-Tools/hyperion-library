@@ -1,10 +1,9 @@
 #ifndef IDEALEFFICIENCYMAP_H
 #define IDEALEFFICIENCYMAP_H
 
-#include "export.h"
-
 #include <vector>
 
+#include "export.h"
 #include "environment.h"
 #include "boundaries.h"
 #include "receiver.h"
@@ -49,6 +48,10 @@ namespace hypl
 
         //Public functions
         void EvaluateAnnualEfficiencies(hypl::Heliostat::IdealEfficiencyType ideal_efficiency_type, double delta_t);
+
+    private:
+        void ProcessDay(int const& day_number, Heliostat::IdealEfficiencyType const& ideal_efficiency_type, 
+                        double const& delta_hour_angle, double const& weight, double& direct_insolation);
 
     private:
         Environment m_environment;

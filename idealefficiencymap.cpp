@@ -1,11 +1,12 @@
-#include <vector>
+
 #include <functional>
 #include <algorithm>
 #include <execution>
 
+#include "idealefficiencymap.h"
 #include "auxfunction.h"
 #include "heliostatinstantaneousefficiency.h"
-#include "idealefficiencymap.h"
+
 
 hypl::IdealEfficiencyMap::IdealEfficiencyMap(Environment environment, Boundaries boundaries, 
                                             std::vector<Receiver>& receivers, int nrows, int ncolumns) :
@@ -48,7 +49,7 @@ void hypl::IdealEfficiencyMap::set_receivers_radius(double radius)
     for (auto & element : m_receiver) element.set_radius (radius);
 }
 
-void hypl::IdealEfficiencyMap::EvaluateAnnualEfficiencies(hypl::Heliostat::IdealEfficiencyType ideal_efficiency_type, double delta_t)
+void hypl::IdealEfficiencyMap::EvaluateAnnualEfficiencies(Heliostat::IdealEfficiencyType ideal_efficiency_type, double delta_t)
 {
     double delta_hour_angle = delta_t * hypl::mathconstants::earth_rotational_speed;
 
@@ -62,42 +63,37 @@ void hypl::IdealEfficiencyMap::EvaluateAnnualEfficiencies(hypl::Heliostat::Ideal
     double sun_subtended_angle;
     double wo;
     double hour_angle;
+    int day_number;
 
-    int day_number = 174;
-    while (day_number < 356)
+    double weight = 2.0;
+    for(day_number=174; day_number<356; day_number++)
     {
-        declination = auxfunction::SolarDeclinationByDayNumber(day_number);
-        sun_subtended_angle = m_environment.sun_subtended_angle()[day_number-1];
-        wo = m_environment.location().HourAngleLimit(declination);
-        hour_angle = -wo;
-        while (hour_angle < wo)
+        ProcessDay(day_number, ideal_efficiency_type, delta_hour_angle, weight, direct_insolation);
+    }
+ 
+
+    weight = 0.5;
+    day_number = 173;
+    ProcessDay(day_number, ideal_efficiency_type, delta_hour_angle, weight, direct_insolation);
+
+    for (auto& element : m_heliostat) element.m_annual_ideal_efficiency = element.m_annual_ideal_efficiency/direct_insolation;
+}
+
+void hypl::IdealEfficiencyMap::ProcessDay(int const& day_number, Heliostat::IdealEfficiencyType const& ideal_efficiency_type, 
+                                          double const& delta_hour_angle, double const& weight, double& direct_insolation)
+{
+    double declination = auxfunction::SolarDeclinationByDayNumber(day_number);
+    double sun_subtended_angle = m_environment.sun_subtended_angle()[day_number-1];
+    double wo = m_environment.location().HourAngleLimit(declination);
+    double hour_angle = -wo;
+    while (hour_angle < wo)
         {
             vec3d sun_vector = m_environment.location().SolarVector(hour_angle, declination);
-            double dni = 2.0 * m_environment.atmosphere().DniFromSz(sun_vector.z);
+            double dni = weight * m_environment.atmosphere().DniFromSz(sun_vector.z);
             HeliostatInstantaneousEfficiency AuxFunctor(sun_vector, sun_subtended_angle, ideal_efficiency_type, dni);
             
             direct_insolation += dni;
             std::for_each(std::execution::par_unseq, m_heliostat.begin(), m_heliostat.end(), AuxFunctor);
             hour_angle += delta_hour_angle;
         }
-        day_number++;
-    }
-
-    day_number = 173;
-    declination = auxfunction::SolarDeclinationByDayNumber(day_number);
-    sun_subtended_angle = m_environment.sun_subtended_angle()[day_number-1];
-    wo = m_environment.location().HourAngleLimit(declination);
-    hour_angle = -wo;
-    while (hour_angle < wo)
-    {
-        vec3d sun_vector = m_environment.location().SolarVector(hour_angle, declination);
-        double dni = 0.5 * m_environment.atmosphere().DniFromSz(sun_vector.z);
-        HeliostatInstantaneousEfficiency AuxFunctor(sun_vector, sun_subtended_angle, ideal_efficiency_type, dni);
-        
-        direct_insolation += dni;
-        std::for_each(std::execution::par_unseq, m_heliostat.begin(), m_heliostat.end(), AuxFunctor);
-        hour_angle += delta_hour_angle;
-    }
-
-    for (auto& element : m_heliostat) element.m_annual_ideal_efficiency = element.m_annual_ideal_efficiency/direct_insolation;
 }

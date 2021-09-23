@@ -1,6 +1,6 @@
 #include "vec2d.h"
 
-#include "gcf.h"
+#include "auxfunction.h"
 
 
 const hypl::vec2d hypl::vec2d::Zero(0., 0.);
@@ -13,7 +13,7 @@ bool hypl::vec2d::operator==(const vec2d& v) const
 {
     if (this == &v) return true;
 
-    return gcf::equals(x, v.x) && gcf::equals(y, v.y);
+    return auxfunction::equals(x, v.x) && auxfunction::equals(y, v.y);
 }
 
 bool hypl::vec2d::operator!=(const vec2d& v) const

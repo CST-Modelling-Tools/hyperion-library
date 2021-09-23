@@ -1,15 +1,7 @@
 #include <math.h>
-#include <vector>
-#include <thread>
-#include <future>
 
-#include "location.h"
-#include "atmosphere.h"
-#include "receiver.h"
 #include "heliostat.h"
 #include "auxfunction.h"
-#include "gcf.h"
-
 
 hypl::Heliostat::Heliostat(Environment& environment, std::vector<Receiver>& receivers, vec3d center) : 
 m_environment {environment},

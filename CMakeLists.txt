@@ -21,7 +21,6 @@ set(Headers
     ./include/boundaries.h 
     ./include/environment.h 
     ./include/export.h 
-    ./include/gcf.h 
     ./include/heliostat.h 
     ./include/heliostatinstantaneousefficiency.h
     ./include/idealefficiencymap.h 
@@ -36,7 +35,6 @@ set(Sources
     atmosphere.cpp 
     auxfunction.cpp 
     environment.cpp 
-    gcf.cpp 
     heliostat.cpp
     heliostatinstantaneousefficiency.cpp
     idealefficiencymap.cpp     
