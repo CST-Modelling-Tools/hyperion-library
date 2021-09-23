@@ -44,7 +44,7 @@ void hypl::Heliostat::update()
 
 double hypl::Heliostat::Spillage(int receiver_id, double sun_subtended_angle) const
 {
-    double receiver_subtended_angle = auxfunction::Subtended_angle(m_receivers[receiver_id].radius() / m_slant_range[receiver_id]);
+    double receiver_subtended_angle = auxfunction::ReceiverSubtendedAngle(m_receivers[receiver_id].radius() / m_slant_range[receiver_id]);
 
     if( receiver_subtended_angle < sun_subtended_angle) return receiver_subtended_angle / sun_subtended_angle;
     else return 1.0;

@@ -560,26 +560,6 @@ TEST(AuxfunctionTest, SolarDeclinationByDayNumber)
     }
 }
 
-TEST(AuxfunctionTest, SolarDeclinationByIndex)
-{
-    int minimum_day_index = 1;
-    int delta_day_index = 5;
-    int day_index = minimum_day_index;
-    double expected_solar_declination_by_day_index;
-
-    const double k = (2. * hypl::mathconstants::pi)/365.;
-    while( day_index < 365)
-    {
-        double day_number = (day_index + 355) % 365;
-        double omega = k * (day_number - 1.0);
-        expected_solar_declination_by_day_index = 0.006918 - 0.399912 * cos(omega) + 0.070257 * sin(omega)
-                                  - 0.006758 * cos(2.*omega) + 0.000907 * sin(2.*omega)
-                                  - 0.002697 * cos(3.*omega) + 0.001480 * sin(3.*omega);
-        EXPECT_DOUBLE_EQ( hypl::auxfunction::SolarDeclinationByIndex(day_index), 
-                         expected_solar_declination_by_day_index) << "day number = " << day_number << std::endl;
-        day_index += delta_day_index;
-    }
-}
 
 int main(int argc, char* argv[])
 {

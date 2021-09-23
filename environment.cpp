@@ -26,7 +26,7 @@ void hypl::Environment::update_environment()
     m_declination.reserve(ndays);
     for (int i=1; i<=ndays; i++)
     {
-        m_sun_subtended_angle.emplace_back(auxfunction::Subtended_angle(gcf::Sun_radius / auxfunction::Distance_earth_sun(i)));
+        m_sun_subtended_angle.emplace_back(auxfunction::ReceiverSubtendedAngle(gcf::Sun_radius / auxfunction::DistanceSunEarth(i)));
         m_declination.emplace_back(auxfunction::SolarDeclinationByDayNumber(i));
     }
 }

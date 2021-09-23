@@ -15,7 +15,7 @@ double hypl::Atmosphere::Transmittance(double slant_range) const
             return TransmittanceLH(slant_range);
             break;
         default:
-            return 1.0;
+            return -1.0;
             break;
     }
 }

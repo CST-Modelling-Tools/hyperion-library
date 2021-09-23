@@ -1,5 +1,5 @@
-#ifndef ATTENUATION_H
-#define ATTENUATION_H
+#ifndef ATMOSPHERE_H
+#define ATMOSPHERE_H
 
 #include "export.h"
 
@@ -48,4 +48,4 @@ namespace hypl
     };
 }
 
-#endif // ATTENUATION_H
+#endif // ATMOSPHERE_H
