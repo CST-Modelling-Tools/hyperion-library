@@ -525,19 +525,6 @@ TEST(DniASHRAETest, operatorFunction)
     }
 }
 
-TEST(AuxfunctionTest, DayNumber)
-{
-    int minimum_day_index = 1;
-    int delta_day_index = 7;
-    int day_index = minimum_day_index;
-    int expected_day_number;
-    while( day_index < 365)
-    {
-        expected_day_number = (day_index + 355) % 365;
-        EXPECT_EQ( hypl::auxfunction::DayNumber(day_index), expected_day_number);
-        day_index += delta_day_index;
-    }
-}
 
 TEST(AuxfunctionTest, SolarDeclinationByDayNumber)
 {

@@ -1,13 +1,6 @@
-#include <algorithm>         //to call std:sort
+#include <math.h>
 #include "auxfunction.h"
 #include "mathconstants.h"
-#include "dniashrae.h"
-#include "gcf.h"
-
-int hypl::auxfunction::DayNumber(int day_index)
-{
-    return (day_index + 355) % 365;
-}
 
 double hypl::auxfunction::SolarDeclinationByDayNumber(int day_number)
 {
