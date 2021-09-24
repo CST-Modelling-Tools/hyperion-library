@@ -31,6 +31,6 @@ double hypl::auxfunction::DistanceSunEarth(int day_number)
 
 double hypl::auxfunction:: ReceiverSubtendedAngle(double ratio_of_distances ) 
 {
-    return ( mathconstants::two_pi * ( 1.0 - sqrt(1.0 - (ratio_of_distances * ratio_of_distances ) ) ) );
+    return ( mathconstants::two_pi  -  mathconstants::two_pi * sqrt(1.0 - (ratio_of_distances * ratio_of_distances ) ) );
 }
 

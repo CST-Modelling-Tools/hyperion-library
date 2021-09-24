@@ -45,15 +45,15 @@ double hypl::Heliostat::Spillage(int receiver_id, double sun_subtended_angle) co
 
 double hypl::Heliostat::ReceiverShadowing(int receiver_id, vec3d& sun_vector ) const
 {
-    vec3d heliostat_tower_vector = m_reflected_unit_vector[receiver_id] * m_slant_range[receiver_id];
-    double aux_distance =  dot(sun_vector, heliostat_tower_vector);
-    double sqrt_distance_ray_receiver_center = m_slant_range[receiver_id] * m_slant_range[receiver_id] - aux_distance * aux_distance;
+    vec3d ray_to_receiver_center = m_reflected_unit_vector[receiver_id] * m_slant_range[receiver_id];
+    double aux_distance =  dot(sun_vector, ray_to_receiver_center);
+    double sqrt_distance_sun_ray_to_receiver_center = m_slant_range[receiver_id] * m_slant_range[receiver_id] - aux_distance * aux_distance;
 
     double sqrt_receiver_radius = m_receivers[receiver_id].radius();
     sqrt_receiver_radius *= sqrt_receiver_radius;
 
     double shadow_factor = 0.0;
-    if( sqrt_distance_ray_receiver_center > sqrt_receiver_radius) shadow_factor = 1.0;
+    if( sqrt_distance_sun_ray_to_receiver_center > sqrt_receiver_radius) shadow_factor = 1.0;
 
     return  shadow_factor;
 }
@@ -63,42 +63,52 @@ hypl::Heliostat::TrackingInfo hypl::Heliostat::Track(vec3d& sun_vector,  double 
     TrackingInfo tracking_info = { -1.0, -1 };
 
     double cosine;
-    double transmittance;
-    double spillage;
-    double receiver_shadowing;
     double ideal_efficiency;
-
-    for (int receiver_id = 0; receiver_id < m_receivers.size(); receiver_id++)
+ 
+    switch ( ideal_efficiency_type )
     {
-        switch ( ideal_efficiency_type )
-        {
-            case IdealEfficiencyType::CosineOnly:
-                cosine = sqrt( 0.5 * (1.0 + dot(sun_vector, m_reflected_unit_vector[receiver_id]) ) );
-                ideal_efficiency = cosine;
-                break;
-            case IdealEfficiencyType::CosineAndTransmittance:
-                cosine = sqrt( 0.5 * (1.0 + dot(sun_vector, m_reflected_unit_vector[receiver_id]) ) );
-                transmittance = m_transmittance[receiver_id];
-                ideal_efficiency = cosine * transmittance;
-                break;
-            case IdealEfficiencyType::AllFactors:
-                cosine = sqrt( 0.5 * (1.0 + dot(sun_vector, m_reflected_unit_vector[receiver_id]) ) );
-                transmittance = m_transmittance[receiver_id];
-                spillage = Spillage(receiver_id, sun_subtended_angle);
-                receiver_shadowing = ReceiverShadowing(receiver_id, sun_vector);
-                ideal_efficiency = cosine * transmittance * spillage * receiver_shadowing;           
-                break;
-            default:
-                ideal_efficiency = -1.0;
-                break;
-        }
+        case IdealEfficiencyType::CosineOnly:
+            for (int receiver_id = 0; receiver_id < m_receivers.size(); receiver_id++)
+            {
+                ideal_efficiency = sqrt( 0.5 + 0.5 * dot(sun_vector, m_reflected_unit_vector[receiver_id]) );
 
-        if (ideal_efficiency > tracking_info.ideal_efficiency)
-        {
-            tracking_info.ideal_efficiency = ideal_efficiency;
-            tracking_info.aiming_at_receiver_id = receiver_id;
-        }
+                if (ideal_efficiency > tracking_info.ideal_efficiency)
+                {
+                    tracking_info.ideal_efficiency = ideal_efficiency;
+                    tracking_info.aiming_at_receiver_id = receiver_id;
+                }
+            }
+            break;
+
+        case IdealEfficiencyType::CosineAndTransmittance:
+            for (int receiver_id = 0; receiver_id < m_receivers.size(); receiver_id++)
+            {            
+                cosine = sqrt( 0.5 + 0.5 * dot(sun_vector, m_reflected_unit_vector[receiver_id]) );
+                ideal_efficiency = cosine * m_transmittance[receiver_id];
+
+                if (ideal_efficiency > tracking_info.ideal_efficiency)
+                {
+                    tracking_info.ideal_efficiency = ideal_efficiency;
+                    tracking_info.aiming_at_receiver_id = receiver_id;
+                }
+            }           
+            break;
+            
+        case IdealEfficiencyType::AllFactors:
+            for (int receiver_id = 0; receiver_id < m_receivers.size(); receiver_id++)
+            {
+                cosine = sqrt( 0.5 + 0.5 * dot(sun_vector, m_reflected_unit_vector[receiver_id]) );
+                ideal_efficiency = cosine * m_transmittance[receiver_id] *  Spillage(receiver_id, sun_subtended_angle) * ReceiverShadowing(receiver_id, sun_vector);
+
+                if (ideal_efficiency > tracking_info.ideal_efficiency)
+                {
+                    tracking_info.ideal_efficiency = ideal_efficiency;
+                    tracking_info.aiming_at_receiver_id = receiver_id;
+                }
+            }                      
+            break;
     }
+
 
     return tracking_info;
 }
