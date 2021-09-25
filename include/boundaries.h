@@ -10,7 +10,7 @@ namespace hypl
     public:
         Boundaries() :
             m_xmin {-500.},
-            m_xmax {500.},
+            m_xmax {0.},
             m_ymin {-100.},
             m_ymax {700.} {}
 
