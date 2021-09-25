@@ -52,6 +52,7 @@ namespace hypl
     private:
         void ProcessDay(int const& day_number, Heliostat::IdealEfficiencyType const& ideal_efficiency_type, 
                         double const& delta_hour_angle, double const& weight, double& direct_insolation);
+        double StartingHourAngle(double const& wo, double const& delta_hour_angle);
 
     private:
         Environment m_environment;

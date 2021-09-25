@@ -85,7 +85,7 @@ void hypl::IdealEfficiencyMap::ProcessDay(int const& day_number, Heliostat::Idea
     double declination = auxfunction::SolarDeclinationByDayNumber(day_number);
     double sun_subtended_angle = m_environment.sun_subtended_angle()[day_number-1];
     double wo = m_environment.location().HourAngleLimit(declination);
-    double hour_angle = -wo;
+    double hour_angle = StartingHourAngle(wo, delta_hour_angle);
     while (hour_angle < wo)
     {
         vec3d sun_vector = m_environment.location().SolarVector(hour_angle, declination);
@@ -96,4 +96,11 @@ void hypl::IdealEfficiencyMap::ProcessDay(int const& day_number, Heliostat::Idea
         std::for_each(std::execution::par_unseq, m_heliostat.begin(), m_heliostat.end(), process_heliostat);
         hour_angle += delta_hour_angle;
     }
+}
+
+double hypl::IdealEfficiencyMap::StartingHourAngle(double const& wo, double const& delta_hour_angle)
+{
+       double p, fraction;
+       fraction = std::modf( (2.0*wo)/delta_hour_angle, &p );
+       return -wo + ((fraction * delta_hour_angle)/2.0); 
 }
