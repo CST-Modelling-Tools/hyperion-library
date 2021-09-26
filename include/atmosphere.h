@@ -1,5 +1,5 @@
-#ifndef ATTENUATION_H
-#define ATTENUATION_H
+#ifndef ATMOSPHERE_H
+#define ATMOSPHERE_H
 
 #include "export.h"
 
@@ -9,43 +9,43 @@ namespace hypl
     {
     public:
 
-        enum AttenuationModel { SW, VB, LH };
+        enum TransmittanceModel { SW, VB, LH };
 
         Atmosphere() :
             m_io {1110.0},
             m_beta {0.11},
-            m_attenuation_model {AttenuationModel::VB} {}
+            m_transmittance_model {TransmittanceModel::VB} {}
 
-        Atmosphere(double io, double beta, Atmosphere::AttenuationModel attenuation_model)
+        Atmosphere(double io, double beta, Atmosphere::TransmittanceModel transmittance_model)
             : m_io {io}, 
               m_beta {beta}, 
-              m_attenuation_model {attenuation_model} {}
+              m_transmittance_model {transmittance_model} {}
 
         //Accessors
-        double io() const { return m_io; }
-        double beta() const {return m_beta; }
-        AttenuationModel attenuation_model() const { return m_attenuation_model; }
+        double const& io() const { return m_io; }
+        double const& beta() const {return m_beta; }
+        TransmittanceModel transmittance_model() const { return m_transmittance_model; }
 
         //Mutators
         void set_io(double io) { m_io = io; }
         void set_beta( double beta) { m_beta = beta; }
-        void set_attenuation_model(AttenuationModel attenuation_model) {m_attenuation_model = attenuation_model; }
+        void set_transmittance_model(TransmittanceModel transmittance_model) {m_transmittance_model = transmittance_model; }
 
         //Specific public functions
-        double Attenuation(double slant_range ) const;
+        double Transmittance(double slant_range ) const;
         double DniFromSz(double sz) const;
 
     private:
         //Private functions
-        double AttenuationSW(double slant_range) const;
-        double AttenuationVB(double slant_range) const;
-        double AttenuationLH(double slant_range) const;
+        double TransmittanceSW(double slant_range) const;
+        double TransmittanceVB(double slant_range) const;
+        double TransmittanceLH(double slant_range) const;
 
         //Private variables
         double m_io;
         double m_beta;
-        AttenuationModel m_attenuation_model;
+        TransmittanceModel m_transmittance_model;
     };
 }
 
-#endif // ATTENUATION_H
+#endif // ATMOSPHERE_H

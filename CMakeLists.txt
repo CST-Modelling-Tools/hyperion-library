@@ -19,14 +19,10 @@ set(Headers
     ./include/atmosphere.h
     ./include/auxfunction.h
     ./include/boundaries.h 
-    ./include/deintegrationconstants.h 
-    ./include/deintegrator.h 
-    ./include/dniashrae.h 
     ./include/environment.h 
     ./include/export.h 
-    ./include/gcf.h 
     ./include/heliostat.h 
-    ./include/heliostatpowerperunitarea.h 
+    ./include/processheliostatfunctor.h
     ./include/idealefficiencymap.h 
     ./include/location.h 
     ./include/mathconstants.h 
@@ -38,11 +34,9 @@ set(Headers
 set(Sources 
     atmosphere.cpp 
     auxfunction.cpp 
-    dniashrae.cpp
     environment.cpp 
-    gcf.cpp 
-    heliostat.cpp 
-    heliostatpowerperunitarea.cpp 
+    heliostat.cpp
+    processheliostatfunctor.cpp
     idealefficiencymap.cpp     
     location.cpp
     vec2d.cpp 
@@ -51,7 +45,6 @@ set(Sources
 add_library(${This} SHARED ${Sources} ${Headers})
 
 add_subdirectory(test)
-add_subdirectory(apps)
 
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
@@ -64,9 +57,3 @@ add_custom_command(TARGET ${This} POST_BUILD
      "$<TARGET_FILE:${This}>"
      "./test/$<CONFIGURATION>/$<TARGET_FILE_NAME:${This}>" 
   COMMENT "Copying to test directory")
-
-  add_custom_command(TARGET ${This} POST_BUILD 
-  COMMAND "${CMAKE_COMMAND}" -E copy 
-     "$<TARGET_FILE:${This}>"
-     "./apps/$<CONFIGURATION>/$<TARGET_FILE_NAME:${This}>" 
-  COMMENT "Copying to apps directory")

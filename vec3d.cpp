@@ -1,5 +1,4 @@
-#include "gcf.h"
-
+#include "auxfunction.h"
 #include "vec3d.h"
 
 const hypl::vec3d hypl::vec3d::Zero(0., 0., 0.);
@@ -10,9 +9,9 @@ const hypl::vec3d hypl::vec3d::UnitZ(0., 0., 1.);
 
 bool hypl::vec3d::operator==(const vec3d& v) const
 {
-    return gcf::equals(x, v.x) &&
-           gcf::equals(y, v.y) &&
-           gcf::equals(z, v.z);
+    return auxfunction::equals(x, v.x) &&
+           auxfunction::equals(y, v.y) &&
+           auxfunction::equals(z, v.z);
 }
 
 bool hypl::vec3d::operator!=(const vec3d& v) const
