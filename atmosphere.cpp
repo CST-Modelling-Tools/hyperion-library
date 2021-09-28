@@ -41,3 +41,22 @@ double hypl::Atmosphere::DniFromSz(double sz) const
     if(sz>0.00001) return m_io * exp(-m_beta/sz);
     else return 0.0;
 }
+
+char* hypl::Atmosphere::TransmittanceModelName() const
+{
+    switch ( m_transmittance_model )
+    {
+        case TransmittanceModel::SW:
+            return "S&W\0";
+            break;
+        case TransmittanceModel::VB:
+            return "V&B\0";
+            break;
+        case TransmittanceModel::LH:
+            return "L&H\0";
+            break;
+        default:
+            return "N.A\0";
+            break;
+    }
+}

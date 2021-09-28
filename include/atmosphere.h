@@ -34,6 +34,7 @@ namespace hypl
         //Specific public functions
         double Transmittance(double slant_range ) const;
         double DniFromSz(double sz) const;
+        char* TransmittanceModelName() const;
 
     private:
         //Private functions
