@@ -3,6 +3,7 @@
 
 #include <cfloat>
 #include <cmath>
+#include <limits>
 
 #include "export.h"
 
