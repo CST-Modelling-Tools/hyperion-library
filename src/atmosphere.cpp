@@ -42,7 +42,7 @@ double hypl::Atmosphere::DniFromSz(double sz) const
     else return 0.0;
 }
 
-char* hypl::Atmosphere::TransmittanceModelName() const
+const char* hypl::Atmosphere::TransmittanceModelName() const
 {
     switch ( m_transmittance_model )
     {

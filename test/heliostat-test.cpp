@@ -62,7 +62,7 @@ TEST(Heliostat, ConstructorANDBasicAccessors)
     EXPECT_DOUBLE_EQ(computed_latitude, expected_latitude);
     EXPECT_DOUBLE_EQ(computed_io, expected_io);
     EXPECT_DOUBLE_EQ(computed_beta, expected_beta);
-    EXPECT_DOUBLE_EQ(computed_transmittance_model, expected_transmittance_model);
+    EXPECT_EQ(computed_transmittance_model, expected_transmittance_model);
 
     for( int i = 0; i < 3; i++)
     {

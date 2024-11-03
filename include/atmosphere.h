@@ -9,7 +9,7 @@ namespace hypl
     {
     public:
 
-        enum TransmittanceModel { SW, VB, LH };
+        enum class TransmittanceModel { SW, VB, LH };
 
         Atmosphere() :
             m_io {1110.0},
@@ -34,7 +34,7 @@ namespace hypl
         //Specific public functions
         double Transmittance(double slant_range ) const;
         double DniFromSz(double sz) const;
-        char* TransmittanceModelName() const;
+        const char* TransmittanceModelName() const;
 
     private:
         //Private functions
