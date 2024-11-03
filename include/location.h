@@ -11,12 +11,17 @@ namespace hypl
     class HYPERIONLIBRARY_API Location
     {
     public:
-        Location() : m_latitude {37.2 * mathconstants::degree},
+
+        static constexpr double default_latitude = 37.2 * mathconstants::degree;
+
+        Location() : 
+            m_latitude {default_latitude},
             m_cos_latitude {cos(m_latitude)},
             m_sin_latitude {sin(m_latitude)}
             {} // Latitude stored in radians 0.0174533
 
-        Location(double latitude) : m_latitude {latitude},
+        Location(double latitude) : 
+            m_latitude {latitude},
             m_cos_latitude {cos(m_latitude)},
             m_sin_latitude {sin(m_latitude)}        
             {} //Latitude should be entered in radians
