@@ -7,7 +7,7 @@
 
 namespace hypl
 {
-    struct DLL_API vec2d
+    struct HYPERIONLIBRARY_API vec2d
     {
         vec2d(double x = 0., double y = 0):
             x(x), y(y) {}
@@ -168,5 +168,5 @@ namespace hypl
         return a.x*b.y - a.y*b.x;
     }
 
-    DLL_API std::ostream& operator<<(std::ostream& os, const vec2d& vector);
+    HYPERIONLIBRARY_API std::ostream& operator<<(std::ostream& os, const vec2d& vector);
 }

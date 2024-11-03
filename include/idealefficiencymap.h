@@ -9,6 +9,7 @@
 #include "receiver.h"
 #include "heliostat.h"
 
+/*
 template class DLL_API std::allocator<hypl::Receiver>;
 template class DLL_API std::_Vector_val<std::_Simple_types<hypl::Receiver>>;
 template class DLL_API std::_Compressed_pair<std::allocator<hypl::Receiver>,std::_Vector_val<std::_Simple_types<hypl::Receiver>>,true>;
@@ -18,10 +19,11 @@ template class DLL_API std::allocator<hypl::Heliostat*>;
 template class DLL_API std::_Vector_val<std::_Simple_types<hypl::Heliostat*>>;
 template class DLL_API std::_Compressed_pair<std::allocator<hypl::Heliostat*>,std::_Vector_val<std::_Simple_types<hypl::Heliostat*>>,true>;
 template class DLL_API std::vector<hypl::Heliostat*>;
+*/
 
 namespace hypl
 {
-    class DLL_API IdealEfficiencyMap
+    class HYPERIONLIBRARY_API IdealEfficiencyMap
     {
     public:
 

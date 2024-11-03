@@ -5,7 +5,7 @@
 
 namespace hypl
 {
-    struct DLL_API vec3d
+    struct HYPERIONLIBRARY_API vec3d
     {
         vec3d(double x = 0., double y = 0., double z = 0.):
             x(x), y(y), z(z) {}
@@ -228,4 +228,4 @@ namespace hypl
     }
 }
 
-DLL_API std::ostream& operator<<(std::ostream& os, const hypl::vec3d& vector);
+HYPERIONLIBRARY_API std::ostream& operator<<(std::ostream& os, const hypl::vec3d& vector);

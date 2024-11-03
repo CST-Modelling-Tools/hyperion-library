@@ -8,6 +8,7 @@
 #include "receiver.h"
 #include "vec3d.h"
 
+/*
 struct DLL_API std::_Container_base12;
 
 template class DLL_API std::allocator<double>;
@@ -19,10 +20,11 @@ template class DLL_API std::allocator<hypl::vec3d>;
 template class DLL_API std::_Vector_val<std::_Simple_types<hypl::vec3d>>;
 template class DLL_API std::_Compressed_pair<std::allocator<hypl::vec3d>,std::_Vector_val<std::_Simple_types<hypl::vec3d>>,true>;
 template class DLL_API std::vector<hypl::vec3d>;
+*/
 
 namespace hypl
 {
-    class DLL_API Heliostat
+    class HYPERIONLIBRARY_API Heliostat
     {
  
     public:

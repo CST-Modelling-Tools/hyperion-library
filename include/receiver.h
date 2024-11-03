@@ -6,7 +6,7 @@
 
 namespace hypl
 {
-    class DLL_API Receiver
+    class HYPERIONLIBRARY_API Receiver
     {
     public:
         Receiver() {}

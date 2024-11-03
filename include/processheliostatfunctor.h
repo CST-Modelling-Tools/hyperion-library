@@ -8,7 +8,7 @@
 
 namespace hypl
 {
-    class DLL_API ProcessHeliostatFunctor
+    class HYPERIONLIBRARY_API ProcessHeliostatFunctor
     {
     public:
         ProcessHeliostatFunctor(vec3d& sun_vector, double sun_subtended_angle, hypl::Heliostat::IdealEfficiencyType ideal_efficiency_type, double dni);

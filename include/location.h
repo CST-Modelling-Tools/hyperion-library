@@ -8,7 +8,7 @@
 
 namespace hypl
 {
-    class DLL_API Location
+    class HYPERIONLIBRARY_API Location
     {
     public:
         Location() : m_latitude {37.2 * mathconstants::degree},

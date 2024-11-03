@@ -10,9 +10,9 @@ namespace hypl
 {
     namespace auxfunction
     {
-        DLL_API double SolarDeclinationByDayNumber(int day_number);
-        DLL_API double DistanceSunEarth(int day_number);
-        DLL_API double ReceiverSubtendedAngle(double ratio_of_distances );
+        HYPERIONLIBRARY_API double SolarDeclinationByDayNumber(int day_number);
+        HYPERIONLIBRARY_API double DistanceSunEarth(int day_number);
+        HYPERIONLIBRARY_API double ReceiverSubtendedAngle(double ratio_of_distances );
 
         template<class T>
         constexpr bool equals(T x, T y)

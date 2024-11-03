@@ -5,7 +5,7 @@
 
 namespace hypl
 {
-    class DLL_API Boundaries
+    class HYPERIONLIBRARY_API Boundaries
     {
     public:
         static constexpr double default_xmin = -500.0;

@@ -9,7 +9,7 @@
 
 namespace hypl
 {
-    class DLL_API Environment
+    class HYPERIONLIBRARY_API Environment
     {
     public:
 

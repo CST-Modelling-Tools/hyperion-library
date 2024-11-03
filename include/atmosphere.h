@@ -5,7 +5,7 @@
 
 namespace hypl
 {
-    class DLL_API Atmosphere
+    class HYPERIONLIBRARY_API Atmosphere
     {
     public:
 
