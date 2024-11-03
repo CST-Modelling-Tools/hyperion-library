@@ -2,12 +2,12 @@
 
 #include "auxfunction.h"
 
-
-const hypl::vec2d hypl::vec2d::Zero(0., 0.);
-const hypl::vec2d hypl::vec2d::One(1., 1.);
-const hypl::vec2d hypl::vec2d::UnitX(1., 0.);
-const hypl::vec2d hypl::vec2d::UnitY(0., 1.);
-
+namespace hypl {
+    constexpr vec2d vec2d::Zero{0.0, 0.0};
+    constexpr vec2d vec2d::One{1.0, 1.0};
+    constexpr vec2d vec2d::UnitX{1.0, 0.0};
+    constexpr vec2d vec2d::UnitY{0.0, 1.0};
+}
 
 bool hypl::vec2d::operator==(const vec2d& v) const
 {

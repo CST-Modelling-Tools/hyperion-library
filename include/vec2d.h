@@ -115,7 +115,7 @@ namespace hypl
             return *this;
         }
 
-        bool normalize()
+        [[nodiscard]] bool normalize()
         {
             double s = norm2();
             if (s > 0.) {

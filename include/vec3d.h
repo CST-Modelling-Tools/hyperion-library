@@ -113,7 +113,6 @@ namespace hypl
             return z;
         }
 
-
         double norm2() const {
             return x*x + y*y + z*z;
         }
@@ -130,7 +129,7 @@ namespace hypl
             return *this;
         }
 
-        bool normalize()
+        [[nodiscard]] bool normalize()
         {
             double s = norm2();
             if (s > 0.) {

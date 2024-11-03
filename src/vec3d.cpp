@@ -1,11 +1,13 @@
 #include "auxfunction.h"
 #include "vec3d.h"
 
-const hypl::vec3d hypl::vec3d::Zero(0., 0., 0.);
-const hypl::vec3d hypl::vec3d::One(1., 1., 1.);
-const hypl::vec3d hypl::vec3d::UnitX(1., 0., 0.);
-const hypl::vec3d hypl::vec3d::UnitY(0., 1., 0.);
-const hypl::vec3d hypl::vec3d::UnitZ(0., 0., 1.);
+namespace hypl {
+    constexpr vec3d vec3d::Zero(0., 0., 0.);
+    constexpr vec3d vec3d::One(1., 1., 1.);
+    constexpr vec3d vec3d::UnitX(1., 0., 0.);
+    constexpr vec3d vec3d::UnitY(0., 1., 0.);
+    constexpr vec3d vec3d::UnitZ(0., 0., 1.);
+}
 
 bool hypl::vec3d::operator==(const vec3d& v) const
 {
