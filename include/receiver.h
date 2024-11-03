@@ -9,9 +9,9 @@ namespace hypl
     class HYPERIONLIBRARY_API Receiver
     {
     public:
-        Receiver() {}
-        Receiver(vec3d aiming_point) : m_aiming_point{aiming_point}, m_power{0.0}, m_radius{-1.0}  {}
-        Receiver(vec3d aiming_point, double radius) : m_aiming_point{aiming_point}, m_power{0.0}, m_radius{radius} {}
+        Receiver() : m_aiming_point{}, m_power{0.0}, m_radius{-1.0} {}
+        Receiver(const vec3d& aiming_point) : m_aiming_point{aiming_point}, m_power{0.0}, m_radius{-1.0}  {}
+        Receiver(const vec3d& aiming_point, double radius) : m_aiming_point{aiming_point}, m_power{0.0}, m_radius{radius} {}
 
         //Accessors
         vec3d const& aiming_point() const { return m_aiming_point; }
@@ -19,7 +19,7 @@ namespace hypl
         double const& radius() const { return m_radius; }
 
         //Mutators
-        void set_aiming_point(vec3d aiming_point) {m_aiming_point = aiming_point;}
+        void set_aiming_point(const vec3d& aiming_point) {m_aiming_point = aiming_point;}
         void set_power(double power) {m_power = power;}
         void set_radius(double radius) {m_radius = radius;}
 
