@@ -40,9 +40,9 @@ namespace hypl
         //Mutators
         void update();
         void regenerate();
-        void set_environment(Environment environment) {m_environment = environment; update();}
-        void set_boundaries(Boundaries boundaries) {m_boundaries = boundaries; regenerate();}
-        void set_receivers(std::vector<Receiver> receivers) {m_receiver = receivers; update();}
+        void set_environment(const Environment& environment) {m_environment = environment; update();}
+        void set_boundaries(const Boundaries& boundaries) {m_boundaries = boundaries; regenerate();}
+        void set_receivers(const std::vector<Receiver>& receivers) {m_receiver = receivers; update();}
         void set_receivers_radius(double radius);
         void set_nrows(int nrows) {m_nrows = nrows; regenerate();}
         void set_ncolumns(int ncolumns) {m_ncolumns = ncolumns; regenerate();}
@@ -52,9 +52,9 @@ namespace hypl
         void EvaluateAnnualEfficiencies(hypl::Heliostat::IdealEfficiencyType ideal_efficiency_type, double delta_t);
 
     private:
-        void ProcessDay(int const& day_number, Heliostat::IdealEfficiencyType const& ideal_efficiency_type, 
-                        double const& delta_hour_angle, double const& weight, double& direct_insolation);
-        double StartingHourAngle(double const& wo, double const& delta_hour_angle);
+        void ProcessDay(int day_number, Heliostat::IdealEfficiencyType ideal_efficiency_type, 
+                        double delta_hour_angle, double weight, double& direct_insolation);
+        double StartingHourAngle(double wo, double delta_hour_angle);
 
     private:
         Environment m_environment;

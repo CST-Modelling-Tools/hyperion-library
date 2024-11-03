@@ -1,4 +1,3 @@
-
 #include <functional>
 #include <algorithm>
 #include <execution>
@@ -79,8 +78,8 @@ void hypl::IdealEfficiencyMap::EvaluateAnnualEfficiencies(Heliostat::IdealEffici
     for (auto& element : m_heliostat) element.m_annual_ideal_efficiency = element.m_annual_ideal_efficiency/direct_insolation;
 }
 
-void hypl::IdealEfficiencyMap::ProcessDay(int const& day_number, Heliostat::IdealEfficiencyType const& ideal_efficiency_type, 
-                                          double const& delta_hour_angle, double const& weight, double& direct_insolation)
+void hypl::IdealEfficiencyMap::ProcessDay(int day_number, Heliostat::IdealEfficiencyType ideal_efficiency_type, 
+                                          double delta_hour_angle, double weight, double& direct_insolation)
 {
     double declination = auxfunction::SolarDeclinationByDayNumber(day_number);
     double sun_subtended_angle = m_environment.sun_subtended_angle()[day_number-1];
@@ -98,7 +97,7 @@ void hypl::IdealEfficiencyMap::ProcessDay(int const& day_number, Heliostat::Idea
     }
 }
 
-double hypl::IdealEfficiencyMap::StartingHourAngle(double const& wo, double const& delta_hour_angle)
+double hypl::IdealEfficiencyMap::StartingHourAngle(double wo, double delta_hour_angle)
 {
        double p, fraction;
        fraction = std::modf( (2.0*wo)/delta_hour_angle, &p );
