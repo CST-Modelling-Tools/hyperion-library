@@ -15,7 +15,7 @@ namespace hypl
         DLL_API double ReceiverSubtendedAngle(double ratio_of_distances );
 
         template<class T>
-        bool equals(T x, T y)
+        constexpr bool equals(T x, T y)
         {
             return std::abs(x - y) < std::numeric_limits<T>::epsilon();
         }
