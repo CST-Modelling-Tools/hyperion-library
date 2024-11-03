@@ -5,7 +5,7 @@
 
 #if ! defined(DLL_API)
 #   if defined(_WIN32) || defined(_WIN64) // for windows builds
-#       if defined(pepe)
+#       if defined(HYPERIONLIBRARY_DLL_EXPORT)
 #           define DLL_API __declspec(dllexport)
 #       else
 #           define DLL_API __declspec(dllimport)

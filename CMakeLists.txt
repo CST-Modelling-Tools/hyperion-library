@@ -1,59 +1,52 @@
-cmake_minimum_required(VERSION 3.20.2)
+cmake_minimum_required(VERSION 3.28.2)
 
+# Project definition
 set(This hyperionlibrary)
-
 project(${This} VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+# Enable testing through CTest
 include(CTest)
 enable_testing()
 
-add_subdirectory(googletest)
+# Use target-based include directories for modularity
+set(HEADER_DIR ${CMAKE_SOURCE_DIR}/include)
+set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 
-include_directories(
-    ./include)
+# Define source and header files
+file(GLOB_RECURSE Headers "${HEADER_DIR}/*.h")
+file(GLOB_RECURSE Sources "${SOURCE_DIR}/*.cpp")
 
-set(Headers 
-    ./include/atmosphere.h
-    ./include/auxfunction.h
-    ./include/boundaries.h 
-    ./include/environment.h 
-    ./include/export.h 
-    ./include/heliostat.h 
-    ./include/processheliostatfunctor.h
-    ./include/idealefficiencymap.h 
-    ./include/location.h 
-    ./include/mathconstants.h 
-    ./include/receiver.h 
-    ./include/vec2d.h 
-    ./include/vec3d.h
-)
-
-set(Sources 
-    atmosphere.cpp 
-    auxfunction.cpp 
-    environment.cpp 
-    heliostat.cpp
-    processheliostatfunctor.cpp
-    idealefficiencymap.cpp     
-    location.cpp
-    vec2d.cpp 
-    vec3d.cpp)
-
+# Define the main library target
 add_library(${This} SHARED ${Sources} ${Headers})
+target_include_directories(${This} PUBLIC ${HEADER_DIR})
 
+# Set DLL export definition for Windows
+set_target_properties(${This} PROPERTIES DEFINE_SYMBOL HYPERIONLIBRARY_DLL_EXPORT)
+
+# Google Test setup using FetchContent for isolated dependency management
+include(FetchContent)
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz
+
+)
+FetchContent_MakeAvailable(googletest)
+
+# Create a test executable
 add_subdirectory(test)
 
-
+# Packaging
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-set_target_properties(${PROJECT_NAME} PROPERTIES DEFINE_SYMBOL pepe)
 include(CPack)
 
-add_custom_command(TARGET ${This} POST_BUILD 
-  COMMAND "${CMAKE_COMMAND}" -E copy 
-     "$<TARGET_FILE:${This}>"
-     "./test/$<CONFIGURATION>/$<TARGET_FILE_NAME:${This}>" 
-  COMMENT "Copying to test directory")
+# Copy library to the test directory after build
+add_custom_command(TARGET hyperionlibrary POST_BUILD 
+    COMMAND "${CMAKE_COMMAND}" -E copy 
+    "$<TARGET_FILE:hyperionlibrary>"
+    "$<TARGET_FILE_DIR:testhypl>/$<TARGET_FILE_NAME:hyperionlibrary>"
+    COMMENT "Copying library to test directory"
+)
