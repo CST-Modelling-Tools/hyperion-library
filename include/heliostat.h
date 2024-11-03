@@ -51,9 +51,9 @@ namespace hypl
         void update();
 
         //Public functions
-        TrackingInfo Track(vec3d& sun_vector, double sun_subtended_angle, IdealEfficiencyType ideal_efficiency_type) const;
+        TrackingInfo Track(const vec3d& sun_vector, double sun_subtended_angle, IdealEfficiencyType ideal_efficiency_type) const;
         double Spillage(int receiver_id, double sun_subtended_angle) const;
-        double ReceiverShadowing(int receiver_id, vec3d& sun_vector) const;
+        double ReceiverShadowing(int receiver_id, const vec3d& sun_vector) const;
 
         double m_annual_ideal_efficiency;
 

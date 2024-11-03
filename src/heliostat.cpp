@@ -43,7 +43,7 @@ double hypl::Heliostat::Spillage(int receiver_id, double sun_subtended_angle) co
 }
 
 
-double hypl::Heliostat::ReceiverShadowing(int receiver_id, vec3d& sun_vector ) const
+double hypl::Heliostat::ReceiverShadowing(int receiver_id, const vec3d& sun_vector) const
 {
     vec3d ray_to_receiver_center = m_reflected_unit_vector[receiver_id] * m_slant_range[receiver_id];
     double aux_distance =  dot(sun_vector, ray_to_receiver_center);
@@ -58,7 +58,7 @@ double hypl::Heliostat::ReceiverShadowing(int receiver_id, vec3d& sun_vector ) c
     return  shadow_factor;
 }
 
-hypl::Heliostat::TrackingInfo hypl::Heliostat::Track(vec3d& sun_vector,  double sun_subtended_angle, IdealEfficiencyType ideal_efficiency_type) const
+hypl::Heliostat::TrackingInfo hypl::Heliostat::Track(const vec3d& sun_vector,  double sun_subtended_angle, IdealEfficiencyType ideal_efficiency_type) const
 {
     TrackingInfo tracking_info = { -1.0, -1 };
 
