@@ -24,9 +24,9 @@ namespace hypl
         std::vector<double> const& declination() const { return m_declination; }
 
         //Mutators
-        void set_location(Location location) { m_location = location; }
-        void set_atmosphere(Atmosphere atmosphere) { m_atmosphere = atmosphere; }
-        void set_location_and_atmosphere(Location location, Atmosphere atmosphere) { m_location = location; m_atmosphere = atmosphere; }
+        void set_location(const Location& location) { m_location = location; }
+        void set_atmosphere(const Atmosphere& atmosphere) { m_atmosphere = atmosphere; }
+        void set_location_and_atmosphere(const Location& location, const Atmosphere& atmosphere) { m_location = location; m_atmosphere = atmosphere; }
         void update_environment();
 
     private:
