@@ -2,7 +2,6 @@
 #define MATHCONSTANTS_H
 
 #include <numbers> // For std::numbers::pi
-#include "export.h"
 
 namespace hypl
 {

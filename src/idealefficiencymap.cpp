@@ -8,13 +8,13 @@
 
 
 hypl::IdealEfficiencyMap::IdealEfficiencyMap(Environment environment, Boundaries boundaries, 
-                                            std::vector<Receiver>& receivers, int nrows, int ncolumns) :
+                                            std::vector<Receiver> receivers, int nrows, int ncolumns) :
 m_environment {environment},
 m_boundaries {boundaries},
 m_receiver {receivers},
 m_nrows {nrows},
 m_ncolumns {ncolumns}
-{
+{   
     regenerate();
 }
 
@@ -59,12 +59,12 @@ void hypl::IdealEfficiencyMap::EvaluateAnnualEfficiencies(Heliostat::IdealEffici
     // Computation for half of the year but multiplying the dni by 2.0
 
     double declination;
-    double sun_subtended_angle;
     double wo;
     double hour_angle;
     int day_number;
 
     double weight = 2.0;
+    
     for(day_number=174; day_number<356; day_number++)
     {
         ProcessDay(day_number, ideal_efficiency_type, delta_hour_angle, weight, direct_insolation);
@@ -80,19 +80,22 @@ void hypl::IdealEfficiencyMap::EvaluateAnnualEfficiencies(Heliostat::IdealEffici
 
 void hypl::IdealEfficiencyMap::ProcessDay(int day_number, Heliostat::IdealEfficiencyType ideal_efficiency_type, 
                                           double delta_hour_angle, double weight, double& direct_insolation)
-{
+{      
     double declination = auxfunction::SolarDeclinationByDayNumber(day_number);
     double sun_subtended_angle = m_environment.sun_subtended_angle()[day_number-1];
     double wo = m_environment.location().HourAngleLimit(declination);
     double hour_angle = StartingHourAngle(wo, delta_hour_angle);
+
     while (hour_angle < wo)
     {
         vec3d sun_vector = m_environment.location().SolarVector(hour_angle, declination);
         double dni = weight * m_environment.atmosphere().DniFromSz(sun_vector.z);
+ 
         ProcessHeliostatFunctor process_heliostat(sun_vector, sun_subtended_angle, ideal_efficiency_type, dni);
         
         direct_insolation += dni;
-        std::for_each(std::execution::par_unseq, m_heliostat.begin(), m_heliostat.end(), process_heliostat);
+
+        std::for_each(std::execution::par_unseq, m_heliostat.begin(), m_heliostat.end(), process_heliostat);      
         hour_angle += delta_hour_angle;
     }
 }
